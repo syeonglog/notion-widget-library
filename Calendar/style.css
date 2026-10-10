@@ -12,7 +12,7 @@ body {
 /* 전체 달력 */
 .calendar {
   width: 100%;
-  max-width: 260px;
+  max-width: none;
   background: #F3EEEA;
   color: #776B5D;
   border: 2px solid #776B5D;
