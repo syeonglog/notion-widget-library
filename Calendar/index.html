@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Calendar</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="calendar">
+
+    <!-- 상단 제목 및 화살표 -->
+    <div class="calendar-header">
+      <button class="arrow" id="prev" aria-label="이전 달">
+        &#8249;
+      </button>
+
+      <div class="calendar-title">
+        <h2>Calendar</h2>
+        <p id="subtitle">a little moment for today</p>
+      </div>
+
+      <button class="arrow" id="next" aria-label="다음 달">
+        &#8250;
+      </button>
+    </div>
+
+    <!-- 요일 -->
+    <div class="weekdays">
+      <span>S</span>
+      <span>M</span>
+      <span>T</span>
+      <span>W</span>
+      <span>T</span>
+      <span>F</span>
+      <span>S</span>
+    </div>
+
+    <!-- 날짜가 표시되는 영역 -->
+    <div class="dates" id="dates"></div>
+
+  </div>
+</body>
+</html>

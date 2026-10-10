@@ -1,0 +1,111 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 8px;
+  background: transparent;
+  font-family: Arial, sans-serif;
+}
+
+/* 전체 달력 */
+.calendar {
+  width: 100%;
+  max-width: 260px;
+  background: #F3EEEA;
+  color: #776B5D;
+  border: 2px solid #776B5D;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* 상단 제목 및 화살표 */
+.calendar-header {
+  background: #776B5D;
+  color: #F3EEEA;
+  padding: 12px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-title {
+  text-align: center;
+}
+
+.calendar-title h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.calendar-title p {
+  margin: 4px 0 0;
+  font-size: 8px;
+  opacity: 0.85;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  color: #F3EEEA;
+  font-size: 21px;
+  cursor: pointer;
+  padding: 0 6px;
+}
+
+.arrow:hover {
+  opacity: 0.6;
+}
+
+/* 요일 */
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 13px 9px 5px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* 날짜 */
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 5px 9px 12px;
+  row-gap: 5px;
+  text-align: center;
+}
+
+.day {
+  width: 27px;
+  height: 27px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #776B5D;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.day:hover {
+  background: #E5DCD3;
+}
+
+/* 이전 달 및 다음 달 날짜 */
+.day.other-month {
+  opacity: 0.25;
+}
+
+/* 선택한 날짜 */
+.day.selected {
+  background: #776B5D;
+  color: #F3EEEA;
+  opacity: 1;
+}
