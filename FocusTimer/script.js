@@ -770,23 +770,23 @@ function renderLog(now) {
             'Delete session'
         );
 
-        del.addEventListener('click', () => {
-            if (!confirm('Delete this session?')) {
-                return;
-            }
 
+        del.addEventListener('click', () => {
+            // 실행 중인 세션을 삭제하는 경우
             if (state.activeId === s.id) {
                 state.activeId = null;
             }
 
-            state.sessions =
-                state.sessions.filter(
-                    x => x.id !== s.id
-                );
+            // 해당 세션 기록 삭제
+            state.sessions = state.sessions.filter(
+                x => x.id !== s.id
+            );
 
+            // 변경 사항 저장 및 화면 갱신
             save();
             render();
         });
+
 
         row.append(main, d, del);
 
