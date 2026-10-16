@@ -35,8 +35,8 @@ body {
 .shell {
     width: 100%;
     max-width: 520px;
-    margin: auto;
-    /* padding: 10px; */
+    margin: 0;
+    padding: 0;
 
     display: grid;
     gap: 14px;

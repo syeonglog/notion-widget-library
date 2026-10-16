@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Notion D-Day Tracker</title>
+
+    <!-- Fonts -->
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    >
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Lucide Icons -->
+    <script
+        src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"
+        defer
+    ></script>
+
+    <!-- Main Script -->
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main class="widget">
+
+        <!-- =========================
+             Header
+        ========================== -->
+        <header class="widget-header">
+
+            <div class="header-text">
+                <h1>D-Day Tracker</h1>
+                <p>COUNTING THE DAYS</p>
+            </div>
+
+            <button
+                id="add-event-btn"
+                class="icon-button add-button"
+                type="button"
+                aria-label="Add event"
+                title="Add event"
+            >
+                <i data-lucide="plus"></i>
+            </button>
+
+        </header>
+
+
+        <!-- =========================
+             Main D-Day Card
+        ========================== -->
+        <section
+            class="main-dday-card"
+            aria-label="Selected D-Day"
+        >
+
+            <div id="main-empty" class="main-empty">
+                <i data-lucide="calendar-days"></i>
+
+                <p>No events yet</p>
+
+                <span>
+                    Add your first important date.
+                </span>
+            </div>
+
+            <div id="main-content" class="main-content hidden">
+
+                <p
+                    id="main-event-name"
+                    class="main-event-name"
+                ></p>
+
+                <div
+                    id="main-dday"
+                    class="main-dday"
+                ></div>
+
+                <p
+                    id="main-event-date"
+                    class="main-event-date"
+                ></p>
+
+                <p
+                    id="main-event-note"
+                    class="main-event-note hidden"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             Event Editor
+        ========================== -->
+        <section
+            id="editor-panel"
+            class="editor-panel hidden"
+            aria-labelledby="editor-title"
+        >
+
+            <div class="editor-header">
+                <h2 id="editor-title">Add Event</h2>
+
+                <button
+                    id="close-editor-btn"
+                    class="icon-button"
+                    type="button"
+                    aria-label="Close editor"
+                >
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <form id="event-form" novalidate>
+
+                <div class="field">
+                    <label for="event-name">
+                        Event Name
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="event-name"
+                        type="text"
+                        maxlength="100"
+                        placeholder="e.g. TOEIC Exam"
+                        autocomplete="off"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="event-date">
+                        Target Date
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        id="event-date"
+                        type="date"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="event-note">
+                        Memo
+                        <span class="optional">Optional</span>
+                    </label>
+
+                    <textarea
+                        id="event-note"
+                        rows="2"
+                        maxlength="300"
+                        placeholder="Add a short note..."
+                    ></textarea>
+                </div>
+
+                <p
+                    id="form-error"
+                    class="form-error hidden"
+                    role="alert"
+                ></p>
+
+                <div class="form-actions">
+
+                    <button
+                        id="cancel-editor-btn"
+                        class="button button-secondary"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        id="save-event-btn"
+                        class="button button-primary"
+                        type="submit"
+                    >
+                        Save Event
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- =========================
+             Upcoming Events
+        ========================== -->
+        <section
+            class="events-section"
+            aria-labelledby="events-title"
+        >
+
+            <div class="events-header">
+
+                <div class="events-heading">
+                    <h2 id="events-title">
+                        Upcoming Events
+                    </h2>
+
+                    <span id="event-count">
+                        0 EVENTS
+                    </span>
+                </div>
+
+                <button
+                    id="toggle-past-btn"
+                    class="text-button"
+                    type="button"
+                    aria-pressed="false"
+                >
+                    Show Past
+                </button>
+
+            </div>
+
+            <div
+                id="events-list"
+                class="events-list"
+            ></div>
+
+            <div
+                id="list-empty"
+                class="list-empty hidden"
+            >
+                <i data-lucide="calendar"></i>
+                <p>No events to display.</p>
+            </div>
+
+        </section>
+
+        <!-- Status for accessibility -->
+        <p
+            id="live-status"
+            class="sr-only"
+            role="status"
+            aria-live="polite"
+        ></p>
+
+    </main>
+</body>
+</html>
