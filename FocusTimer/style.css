@@ -1,0 +1,459 @@
+
+/* ================================
+   Theme
+================================ */
+
+:root {
+    --bg: #F3EEEA;
+    --soft: #F9F8F6;
+    --ink: #776B5D;
+    --dark: #584B3D;
+    --line: #E6DED6;
+    --accent: #9C816B;
+}
+
+/* ================================
+   Reset
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: Inter, Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* ================================
+   Main Layout
+================================ */
+
+.shell {
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+    padding: 10px;
+
+    display: grid;
+    gap: 14px;
+}
+
+.card {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 17px;
+    padding: 21px;
+    min-width: 0;
+}
+
+/* ================================
+   Header
+================================ */
+
+.heading,
+.log-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+h1,
+h2 {
+    font-size: 19px;
+    color: var(--dark);
+    margin: 0 0 5px;
+    font-weight: 700;
+}
+
+p {
+    margin: 0;
+    color: #9A8C7E;
+    font-size: 12px;
+}
+
+/* ================================
+   Icon Buttons
+================================ */
+
+.icon-btn {
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 22px;
+    padding: 5px;
+
+    display: grid;
+    place-items: center;
+}
+
+.icon-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.icon-btn.small {
+    padding: 4px;
+}
+
+/* ================================
+   Timer Mode Tabs
+================================ */
+
+.tabs {
+    display: flex;
+    background: var(--bg);
+    border-radius: 11px;
+    padding: 4px;
+    margin-top: 23px;
+    gap: 3px;
+}
+
+.tabs button {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 3px;
+
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.tabs button.active {
+    background: #FFFFFF;
+    box-shadow: 0 1px 5px #6B57461C;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+/* ================================
+   Circular Timer
+================================ */
+
+.dial {
+    width: min(100%, 240px);
+    aspect-ratio: 1;
+    position: relative;
+    margin: 20px auto 15px;
+}
+
+.dial svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.dial circle {
+    fill: none;
+    stroke-width: 8;
+}
+
+.track {
+    stroke: #E9E0D8;
+}
+
+.progress {
+    stroke: var(--accent);
+    stroke-linecap: round;
+    stroke-dasharray: 590.619;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.3s linear;
+}
+
+/* ================================
+   Timer Display
+================================ */
+
+.dial-center {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-line {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+#time {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    color: var(--dark);
+    font-variant-numeric: tabular-nums;
+}
+
+#mode-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-top: 6px;
+}
+
+/* ================================
+   Timer Controls
+================================ */
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+}
+
+.actions button,
+.editor button {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 23px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.primary {
+    background: var(--ink);
+    color: #FFFFFF;
+    min-width: 118px;
+}
+
+.secondary {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+.status {
+    text-align: center;
+    min-height: 18px;
+    margin-top: 11px;
+}
+
+/* ================================
+   Duration Editor
+================================ */
+
+.editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 0 auto 14px;
+}
+
+.editor label {
+    font-size: 12px;
+}
+
+.editor input {
+    width: 66px;
+    padding: 9px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    color: var(--dark);
+}
+
+.editor button {
+    padding: 9px;
+}
+
+.subtle {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ================================
+   Daily Log Header
+================================ */
+
+.log-heading {
+    margin-bottom: 18px;
+}
+
+/* ================================
+   Date Navigation
+================================ */
+
+.date-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 5px 8px;
+    margin-bottom: 13px;
+}
+
+.date-nav button {
+    border: 0;
+    background: transparent;
+    color: var(--dark);
+    font-size: 23px;
+    cursor: pointer;
+    padding: 1px 10px;
+}
+
+.date-nav strong {
+    font-size: 13px;
+}
+
+/* ================================
+   Daily Statistics
+================================ */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    margin-bottom: 15px;
+}
+
+.stats > div {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 12px 7px;
+    min-width: 0;
+    text-align: center;
+}
+
+.stats span {
+    display: block;
+    font-size: 10px;
+    line-height: 1.4;
+    min-height: 29px;
+}
+
+.stats strong {
+    display: block;
+    color: var(--dark);
+    font-size: 17px;
+    margin-top: 4px;
+}
+
+/* ================================
+   Session History
+================================ */
+
+.logs {
+    max-height: 260px;
+    overflow: auto;
+}
+
+.log {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 2px;
+    border-bottom: 1px solid var(--line);
+}
+
+.log:last-child {
+    border-bottom: 0;
+}
+
+.log-main {
+    min-width: 0;
+    flex: 1;
+}
+
+.log-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.log-top strong {
+    color: var(--dark);
+    font-size: 12px;
+}
+
+.pill {
+    background: var(--bg);
+    border-radius: 5px;
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+.log-meta {
+    font-size: 11px;
+    color: #96887A;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+.duration {
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.delete {
+    border: 0;
+    background: transparent;
+    color: #9E8D80;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.empty {
+    text-align: center;
+    padding: 25px 4px;
+    color: #9A8C7E;
+    font-size: 12px;
+}
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 380px) {
+
+    .shell {
+        padding: 5px;
+        gap: 9px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+    .tabs button {
+        font-size: 11px;
+    }
+
+    #time {
+        font-size: 36px;
+    }
+
+    .stats span {
+        font-size: 9px;
+    }
+
+    .stats strong {
+        font-size: 15px;
+    }
+}
