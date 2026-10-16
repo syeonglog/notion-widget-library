@@ -703,7 +703,7 @@ textarea:focus-visible {
     }
 
     .main-dday {
-        font-size: clamp(36px, 10vw, 48px);
+        font-size: clamp(36px, 10vw, 45px);
     }
 
     .event-row {
@@ -723,11 +723,11 @@ textarea:focus-visible {
     }
 
     .event-name {
-        font-size: 11px;
+        font-size: 14px;
     }
 
     .event-dday {
-        font-size: 12px;
+        font-size: 15px;
     }
 }
 
@@ -747,7 +747,7 @@ textarea:focus-visible {
     }
 
     .main-dday {
-        font-size: 40px;
+        font-size: 45px;
     }
 
     .events-heading {
