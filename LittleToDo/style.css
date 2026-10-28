@@ -909,3 +909,76 @@ select:focus-visible {
         animation: none !important;
     }
 }
+
+/* ==========================================
+   Summary Cards - 크기 축소
+========================================== */
+
+.summary-card {
+    min-height: 58px;  /* 기존 78px */
+    padding: 8px 5px;  /* 기존 12px 5px */
+}
+
+.summary-label {
+    font-size: 9px;
+    margin-bottom: 4px; /* 기존 7px */
+}
+
+.summary-card strong {
+    font-size: 20px;  /* 기존 23px */
+}
+
+
+/* ==========================================
+   Task List - 글자 크기 확대
+========================================== */
+
+/* Today's Tasks 제목 */
+.section-heading h2 {
+    font-size: 19px;  /* 기존 17px */
+}
+
+/* YOUR LITTLE STEPS */
+.section-eyebrow {
+    font-size: 10px;  /* 기존 9px */
+}
+
+/* 할 일 개수 */
+.task-counter {
+    font-size: 12px;  /* 기존 10px */
+}
+
+/* 카테고리 필터 */
+.filter-btn {
+    font-size: 12px;  /* 기존 11px */
+}
+
+/* 실제 할 일 제목 */
+.task-title {
+    font-size: 14px;  /* 기존 12px */
+}
+
+/* 할 일 카테고리 */
+.category-badge {
+    font-size: 11px;  /* 기존 9px */
+}
+
+/* 중요도 */
+.priority-badge {
+    font-size: 11px;  /* 기존 9px */
+}
+
+/* 할 일 날짜 */
+.task-date {
+    font-size: 11px;  /* 기존 9px */
+}
+
+/* 할 일 간격 */
+.task-item {
+    padding: 15px 2px;  /* 기존 13px 2px */
+}
+
+/* 할 일 추가 버튼 */
+.add-task-button {
+    font-size: 14px;  /* 기존 12px */
+}
