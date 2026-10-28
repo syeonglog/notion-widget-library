@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Little Things - Progress</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="../shared.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <main class="widget">
+
+        <header class="header">
+
+            <div>
+                <p class="eyebrow">LITTLE THINGS</p>
+
+                <h1>Make today count. ♡</h1>
+
+                <p class="date" id="currentDate"></p>
+            </div>
+
+            <div class="heart">♡</div>
+
+        </header>
+
+        <section class="progress">
+
+            <div class="progress-heading">
+                <h2>Today's Progress</h2>
+
+                <span id="progressCount">0 / 0</span>
+            </div>
+
+            <div class="progress-track">
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+            </div>
+
+            <p id="progressText">
+                오늘도 작은 것부터 시작해 봐요 ♡
+            </p>
+
+        </section>
+
+        <section class="summary">
+
+            <div class="summary-card">
+                <span>TODAY</span>
+                <strong id="todayCount">00</strong>
+            </div>
+
+            <div class="summary-card">
+                <span>TOMORROW</span>
+                <strong id="tomorrowCount">00</strong>
+            </div>
+
+            <div class="summary-card">
+                <span>SOMEDAY</span>
+                <strong id="somedayCount">00</strong>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

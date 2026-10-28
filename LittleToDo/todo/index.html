@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Little Things - To-Do</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="../shared.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <main class="widget">
+
+        <header class="header">
+            <div>
+                <p class="eyebrow">YOUR LITTLE STEPS</p>
+                <h1 id="viewTitle">Today's Tasks</h1>
+            </div>
+
+            <span class="task-count" id="taskCount">
+                0 tasks
+            </span>
+        </header>
+
+        <!-- Date Tabs -->
+
+        <nav class="tabs">
+
+            <button class="tab active" data-view="today">
+                Today
+            </button>
+
+            <button class="tab" data-view="tomorrow">
+                Tomorrow
+            </button>
+
+            <button class="tab" data-view="someday">
+                Someday
+            </button>
+
+            <button class="tab" data-view="overdue">
+                Overdue
+            </button>
+
+            <button class="tab" data-view="history">
+                History
+            </button>
+
+        </nav>
+
+        <!-- Category Filters -->
+
+        <section
+            class="category-filters"
+            id="categoryFilters"
+        ></section>
+
+        <!-- Tasks -->
+
+        <section class="task-list" id="taskList"></section>
+
+        <div class="empty-state" id="emptyState" hidden>
+            <span>♡</span>
+            <p>아직 등록된 할 일이 없어요.</p>
+        </div>
+
+        <!-- Add Task -->
+
+        <button class="add-button" id="addButton">
+            <span>+</span>
+            Add a new task...
+        </button>
+
+        <p class="footer">Little steps, lovely days.</p>
+
+    </main>
+
+    <!-- Task Editor -->
+
+    <section class="editor" id="editor" hidden>
+
+        <div class="editor-card">
+
+            <header class="editor-header">
+                <div>
+                    <p class="eyebrow">LITTLE THINGS</p>
+                    <h2 id="editorTitle">New Task ♡</h2>
+                </div>
+
+                <button id="closeEditor" class="close-button">
+                    ×
+                </button>
+            </header>
+
+            <form id="taskForm">
+
+                <label for="taskTitle">Task</label>
+
+                <input
+                    id="taskTitle"
+                    type="text"
+                    maxlength="120"
+                    placeholder="무엇을 해야 하나요?"
+                    required
+                >
+
+                <div class="form-row">
+
+                    <div>
+                        <label for="taskCategory">Category</label>
+
+                        <select id="taskCategory">
+                            <option>Personal</option>
+                            <option>Study</option>
+                            <option>Career</option>
+                            <option>Money</option>
+                            <option>Life</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="taskPriority">Priority</label>
+
+                        <select id="taskPriority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <label for="taskSchedule">When?</label>
+
+                <select id="taskSchedule">
+                    <option value="today">Today</option>
+                    <option value="tomorrow">Tomorrow</option>
+                    <option value="someday">Someday</option>
+                    <option value="custom">Choose a date</option>
+                </select>
+
+                <div id="customDateArea" hidden>
+                    <label for="taskDueDate">Due Date</label>
+                    <input id="taskDueDate" type="date">
+                </div>
+
+                <label for="taskRepeat">Repeat</label>
+
+                <select id="taskRepeat">
+                    <option value="none">반복 안 함</option>
+                    <option value="daily">매일 (Daily)</option>
+                    <option value="weekdays">평일 (Weekdays)</option>
+                    <option value="weekends">주말 (Weekends)</option>
+                    <option value="weekly">매주 (Weekly)</option>
+                </select>
+
+                <p class="repeat-help" id="repeatHelp">
+                    한 번만 실행하는 할 일이에요.
+                </p>
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        id="cancelButton"
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="save-button">
+                        Save Task ♡
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- Deletion Options -->
+
+    <section class="editor" id="deleteDialog" hidden>
+
+        <div class="editor-card">
+
+            <h2>Delete Task?</h2>
+
+            <p class="delete-description">
+                반복되는 할 일을 어떻게 삭제할까요?
+            </p>
+
+            <div class="delete-options">
+                <button id="deleteOne">
+                    이번 날짜만 삭제
+                </button>
+
+                <button id="deleteAll">
+                    반복 일정 전체 삭제
+                </button>
+
+                <button id="cancelDelete">
+                    취소
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="toast" id="toast" role="status"></div>
+
+</body>
+</html>
