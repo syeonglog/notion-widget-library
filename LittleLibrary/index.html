@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Little Library</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <main class="widget">
+
+        <!-- Reading Summary -->
+
+        <header class="reading-summary">
+
+            <div class="summary-top">
+
+                <div class="reading-count">
+                    <strong id="completedCount">00</strong>
+                    <span>
+                        / <span id="goalCount">12</span> books
+                    </span>
+                </div>
+
+                <div class="summary-actions">
+
+                    <select
+                        id="yearSelect"
+                        aria-label="연도 선택"
+                    ></select>
+
+                    <button
+                        id="goalButton"
+                        class="icon-button"
+                        type="button"
+                        title="독서 목표 설정"
+                        aria-label="독서 목표 설정"
+                    >
+                        ⚙
+                    </button>
+
+                    <span id="goalPercent">0%</span>
+
+                </div>
+
+            </div>
+
+            <div
+                class="goal-progress"
+                id="goalProgress"
+                aria-label="연간 독서 목표 진행률"
+            ></div>
+
+        </header>
+
+        <!-- Navigation -->
+
+        <nav class="tabs">
+
+            <button
+                class="tab active"
+                data-view="bookshelf"
+                type="button"
+            >
+                Bookshelf
+            </button>
+
+            <button
+                class="tab"
+                data-view="reading"
+                type="button"
+            >
+                Reading
+            </button>
+
+            <button
+                class="tab"
+                data-view="history"
+                type="button"
+            >
+                History
+            </button>
+
+        </nav>
+
+        <!-- Bookshelf -->
+
+        <section id="bookshelfView">
+
+            <div class="bookshelf" id="bookshelf">
+
+                <!-- JavaScript에서 책 표지 생성 -->
+
+            </div>
+
+            <div class="shelf-line"></div>
+
+            <!-- Selected Book -->
+
+            <section
+                class="book-detail"
+                id="bookDetail"
+                hidden
+            >
+
+                <div class="detail-top">
+
+                    <div class="detail-heading">
+                        <h2 id="detailTitle"></h2>
+                        <p id="detailAuthor"></p>
+                    </div>
+
+                    <div class="detail-actions">
+
+                        <button
+                            id="editBookButton"
+                            type="button"
+                            title="책 수정"
+                        >
+                            ✎
+                        </button>
+
+                        <button
+                            id="deleteBookButton"
+                            type="button"
+                            title="책 삭제"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="detail-meta">
+
+                    <span id="detailStatus"></span>
+                    <span id="detailDate"></span>
+                    <span id="detailRating"></span>
+
+                </div>
+
+                <p id="detailNote"></p>
+
+            </section>
+
+        </section>
+
+        <!-- Currently Reading -->
+
+        <section
+            id="readingView"
+            class="reading-view"
+            hidden
+        ></section>
+
+        <!-- History -->
+
+        <section
+            id="historyView"
+            class="history-view"
+            hidden
+        ></section>
+
+        <!-- Empty State -->
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            hidden
+        >
+            <p>아직 등록된 책이 없어요.</p>
+        </div>
+
+    </main>
+
+    <!-- Book Editor -->
+
+    <section id="bookModal" class="modal-backdrop" hidden>
+
+        <div
+            class="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalTitle"
+        >
+
+            <div class="modal-header">
+
+                <h2 id="modalTitle">Add Book</h2>
+
+                <button
+                    id="closeModal"
+                    type="button"
+                    class="close-button"
+                    aria-label="닫기"
+                >
+                    ×
+                </button>
+
+            </div>
+
+            <form id="bookForm">
+
+                <label for="bookTitle">Title</label>
+
+                <input
+                    id="bookTitle"
+                    type="text"
+                    maxlength="150"
+                    placeholder="책 제목"
+                    required
+                >
+
+                <label for="bookAuthor">Author</label>
+
+                <input
+                    id="bookAuthor"
+                    type="text"
+                    maxlength="100"
+                    placeholder="저자"
+                >
+
+                <!-- Book Cover Upload -->
+
+                <label for="bookCoverFile">Book Cover</label>
+
+                <div class="cover-upload-area">
+
+                    <input
+                        type="file"
+                        id="bookCoverFile"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+                    <button
+                        type="button"
+                        id="selectCoverButton"
+                        class="cover-select-button"
+                    >
+                        <span class="upload-icon">+</span>
+                        <span>Choose Image</span>
+                    </button>
+
+                    <div
+                        class="cover-preview-container"
+                        id="coverPreviewContainer"
+                        hidden
+                    >
+                        <img
+                            id="coverPreview"
+                            class="cover-preview"
+                            alt="책 표지 미리보기"
+                        >
+
+                        <button
+                            type="button"
+                            id="removeCoverButton"
+                            class="remove-cover-button"
+                        >
+                            Remove Image
+                        </button>
+                    </div>
+
+                    <p class="form-help">
+                        JPG, PNG, WEBP · 자동 압축 및 저장
+                    </p>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div>
+                        <label for="bookStatus">Status</label>
+
+                        <select id="bookStatus">
+                            <option value="wishlist">Wishlist</option>
+                            <option value="reading">Reading</option>
+                            <option value="finished">Finished</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="bookRating">Rating</label>
+
+                        <select id="bookRating">
+                            <option value="0">Not Rated</option>
+                            <option value="1">★</option>
+                            <option value="2">★★</option>
+                            <option value="3">★★★</option>
+                            <option value="4">★★★★</option>
+                            <option value="5">★★★★★</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+
+                    <div>
+                        <label for="currentPage">Current Page</label>
+
+                        <input
+                            id="currentPage"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="totalPages">Total Pages</label>
+
+                        <input
+                            id="totalPages"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+                    </div>
+
+                </div>
+
+                <div id="finishDateGroup" hidden>
+
+                    <label for="finishDate">
+                        Finished Date
+                    </label>
+
+                    <input
+                        id="finishDate"
+                        type="date"
+                    >
+
+                </div>
+
+                <label for="bookNote">Reading Note</label>
+
+                <textarea
+                    id="bookNote"
+                    rows="3"
+                    maxlength="1000"
+                    placeholder="책을 읽고 떠오른 생각을 기록해 보세요."
+                ></textarea>
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelModal"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Save Book
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- Goal Editor -->
+
+    <section
+        id="goalModal"
+        class="modal-backdrop"
+        hidden
+    >
+
+        <div class="modal small-modal">
+
+            <div class="modal-header">
+                <h2>Reading Goal</h2>
+
+                <button
+                    id="closeGoalModal"
+                    class="close-button"
+                    type="button"
+                    aria-label="닫기"
+                >
+                    ×
+                </button>
+            </div>
+
+            <form id="goalForm">
+
+                <label for="goalInput">
+                    올해 읽고 싶은 책의 권수
+                </label>
+
+                <input
+                    id="goalInput"
+                    type="number"
+                    min="1"
+                    max="999"
+                    required
+                >
+
+                <button
+                    class="save-button goal-save"
+                    type="submit"
+                >
+                    Save Goal
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- Toast -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+</body>
+</html>
