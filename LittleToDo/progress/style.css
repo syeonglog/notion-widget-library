@@ -188,3 +188,68 @@ body {
         font-size: 8px;
     }
 }
+
+/* ==========================================
+   SOFT IVORY THEME
+========================================== */
+
+:root {
+    --base: #FCFBFA;
+    --soft: #F8F5F2;
+    --muted: #F5E9E9;
+    --accent: #DBC4C1;
+
+    --text: #705C53;
+    --text-light: #A89B94;
+}
+
+/* 전체 위젯 */
+.widget {
+    background: #FCFBFA;
+    border-color: #EEE9E5;
+}
+
+/* 상단 하트 */
+.heart {
+    background: #F5E9E9;
+    color: #DBC4C1;
+}
+
+/* 진행률 영역 */
+.progress {
+    background: #F8F5F2;
+}
+
+/* 진행률 막대 */
+.progress-track {
+    background: #FFFFFF;
+}
+
+.progress-fill {
+    background: #DBC4C1;
+}
+
+/* 날짜별 요약 카드 */
+.summary-card {
+    background: #F8F5F2;
+}
+
+/* Today 카드 강조 */
+.summary-card:first-child {
+    background: #F5E9E9;
+}
+
+/* 글자색 */
+.header h1,
+.progress-heading h2,
+.summary-card strong {
+    color: #705C53;
+}
+
+.eyebrow,
+.date,
+.progress-heading span,
+.progress p,
+.summary-card span {
+    color: #A89B94;
+}

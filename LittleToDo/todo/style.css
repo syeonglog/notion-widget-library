@@ -519,3 +519,167 @@ button {
         padding: 16px;
     }
 }
+
+/* ==========================================
+   SOFT IVORY THEME
+========================================== */
+
+:root {
+    --base: #FCFBFA;
+    --soft: #F8F5F2;
+    --blush: #F5E9E9;
+    --muted: #F5E9E9;
+    --rose: #DBC4C1;
+    --accent: #DBC4C1;
+
+    --text: #705C53;
+    --text-light: #A89B94;
+    --border: #EEE9E5;
+}
+
+/* 전체 위젯 */
+.widget {
+    background: #FCFBFA;
+    border-color: #EEE9E5;
+}
+
+/* 날짜 탭 */
+.tab {
+    background: #F5EFED;
+    color: #A89B94;
+}
+
+.tab:hover {
+    background: #F5E9E9;
+}
+
+.tab.active {
+    background: #F5E9E9;
+    color: #705C53;
+}
+
+/* 카테고리 필터 */
+.filter-button {
+    background: #FFFFFF;
+    border-color: #EEE9E5;
+    color: #A89B94;
+}
+
+.filter-button:hover {
+    background: #F8F5F2;
+}
+
+.filter-button.active {
+    background: #F5E9E9;
+    border-color: #F5E9E9;
+    color: #705C53;
+}
+
+/* 할 일 구분선 */
+.task-item {
+    border-bottom-color: #EEE9E5;
+}
+
+/* 체크박스 */
+.task-checkbox {
+    border-color: #DBC4C1;
+}
+
+.task-checkbox:checked {
+    background: #DBC4C1;
+    border-color: #DBC4C1;
+}
+
+/* 완료한 할 일 */
+.task-item.completed .task-name {
+    color: #A89B94;
+}
+
+/* 카테고리 배지 */
+.badge {
+    background: #F8F5F2;
+    color: #A89B94;
+}
+
+/* 반복 일정 배지 */
+.badge.repeat {
+    background: #F5E9E9;
+    color: #705C53;
+}
+
+/* 높은 중요도 */
+.badge.high {
+    background: #F3E6E6;
+    color: #9B7474;
+}
+
+/* 할 일 추가 버튼 */
+.add-button {
+    background: #F8F5F2;
+    border-color: #DBC4C1;
+    color: #A89B94;
+}
+
+.add-button:hover {
+    background: #F5E9E9;
+}
+
+/* 입력창 */
+#taskForm input,
+#taskForm select {
+    background: #FCFBFA;
+    border-color: #EEE9E5;
+    color: #705C53;
+}
+
+/* 입력창 포커스 */
+#taskForm input:focus,
+#taskForm select:focus {
+    outline: 1px solid #DBC4C1;
+    border-color: #DBC4C1;
+}
+
+/* 저장 버튼 */
+.save-button {
+    background: #F5E9E9;
+    border-color: #F5E9E9;
+    color: #705C53;
+}
+
+.save-button:hover {
+    background: #EDDFE0;
+}
+
+/* 취소 버튼 */
+.cancel-button {
+    background: #FFFFFF;
+    border-color: #EEE9E5;
+    color: #A89B94;
+}
+
+/* 삭제 옵션 */
+.delete-options button {
+    background: #F8F5F2;
+    border-color: #EEE9E5;
+    color: #705C53;
+}
+
+.delete-options button:hover {
+    background: #F5E9E9;
+}
+
+/* 편집창 */
+.editor-card {
+    background: #FFFFFF;
+}
+
+.close-button {
+    background: #F8F5F2;
+    color: #705C53;
+}
+
+/* 완료 알림 */
+.toast {
+    background: #705C53;
+    color: #FFFFFF;
+}
