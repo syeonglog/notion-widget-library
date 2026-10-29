@@ -174,8 +174,24 @@
         </div>
 
         <div class="field">
-          <label for="expenseDate">지출 날짜</label>
-          <input id="expenseDate" type="date" required>
+          <label>지출 날짜</label>
+
+          <div class="expense-date-range">
+            <input
+              id="expenseStartDate"
+              type="date"
+              aria-label="시작일"
+              required
+            >
+
+            <span class="date-separator">~</span>
+
+            <input
+              id="expenseEndDate"
+              type="date"
+              aria-label="종료일"
+            >
+          </div>
         </div>
       </div>
 

@@ -12,12 +12,12 @@ const CATEGORIES = [
 
 const CATEGORY_ICONS = {
   "교통": "🚆",
-  "숙박": "▣",
-  "식비": "🍽",
+  "숙박": "🛌🏻",
+  "식비": "🍽️",
   "카페": "☕",
-  "관광": "◇",
-  "쇼핑": "◈",
-  "기타": "·"
+  "관광": "🎡",
+  "쇼핑": "🛍️",
+  "기타": "🧸"
 };
 
 const $ = (id) => document.getElementById(id);
@@ -270,8 +270,8 @@ function renderExpenses() {
   const empty = $("emptyMessage");
 
   const expenses = [...trip.expenses].sort((a, b) => {
-    const dateCompare = String(b.date)
-      .localeCompare(String(a.date));
+    const dateCompare = String(b.startDate || b.date || "")
+      .localeCompare(String(a.startDate || a.date || ""));
 
     if (dateCompare !== 0) return dateCompare;
 
@@ -305,7 +305,7 @@ function renderExpenses() {
           <div class="expense-meta">
             <span>${escapeHTML(category)}</span>
             <span>·</span>
-            <span>${escapeHTML(expense.date)}</span>
+            <span>${escapeHTML(formatExpenseDate(expense))}</span>
           </div>
         </div>
 
@@ -515,7 +515,10 @@ function resetExpenseForm() {
   $("expenseForm").reset();
 
   $("editExpenseId").value = "";
-  $("expenseDate").value = today();
+
+  $("expenseStartDate").value = today();
+  $("expenseEndDate").value = "";
+  $("expenseEndDate").setCustomValidity("");
 
   $("expenseFormTitle").textContent = "새 지출 추가";
   $("saveExpenseBtn").textContent = "저장하기";
@@ -606,18 +609,31 @@ $("expenseForm").addEventListener("submit", (event) => {
   const id = $("editExpenseId").value;
   const name = $("expenseName").value.trim();
   const category = $("expenseCategory").value;
-  const date = $("expenseDate").value;
+
+  const startDate = $("expenseStartDate").value;
+  const endDate = $("expenseEndDate").value;
+
   const amount = Number($("expenseAmount").value);
 
   if (
     !name ||
-    !date ||
+    !startDate ||
     !CATEGORIES.includes(category) ||
     !Number.isSafeInteger(amount) ||
     amount <= 0
   ) {
     return;
   }
+
+  if (endDate && endDate < startDate) {
+    $("expenseEndDate").setCustomValidity(
+      "종료일은 시작일 이후여야 해요."
+    );
+    $("expenseEndDate").reportValidity();
+    return;
+  }
+
+  $("expenseEndDate").setCustomValidity("");
 
   if (id) {
     const expense = trip.expenses.find(
@@ -628,22 +644,24 @@ $("expenseForm").addEventListener("submit", (event) => {
 
     expense.name = name;
     expense.category = category;
-    expense.date = date;
+    expense.startDate = startDate;
+    expense.endDate = endDate;
     expense.amount = amount;
+
+    delete expense.date;
   } else {
     trip.expenses.push({
       id: createId(),
       name,
       category,
-      date,
+      startDate,
+      endDate,
       amount
     });
   }
 
-  const saved = saveData();
-
-  if (!saved) {
-    alert("데이터 저장에 실패했어요. 브라우저 저장 공간을 확인해 주세요.");
+  if (!saveData()) {
+    console.error("지출 내역 저장 실패");
     return;
   }
 
@@ -693,7 +711,13 @@ $("expenseList").addEventListener("click", (event) => {
 
     $("expenseName").value = expense.name;
     $("expenseCategory").value = expense.category;
-    $("expenseDate").value = expense.date;
+    $("expenseStartDate").value =
+      expense.startDate || expense.date || "";
+
+    $("expenseEndDate").value =
+      expense.endDate || "";
+
+    $("expenseEndDate").setCustomValidity("");
     $("expenseAmount").value = expense.amount;
 
     $("expenseFormTitle").textContent = "지출 내역 수정";
@@ -703,6 +727,21 @@ $("expenseList").addEventListener("click", (event) => {
   }
 });
 
+function formatExpenseDate(expense) {
+  // 기존 단일 날짜 데이터도 지원
+  const start = expense.startDate || expense.date || "";
+  const end = expense.endDate || "";
+
+  const format = (date) => date.replaceAll("-", ".");
+
+  if (!start) return "날짜 미설정";
+
+  if (!end || start === end) {
+    return format(start);
+  }
+
+  return `${format(start)} ~ ${format(end)}`;
+}
 
 /* ==============================
    초기 실행
