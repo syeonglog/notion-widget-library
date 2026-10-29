@@ -159,7 +159,6 @@
     <form id="expenseForm">
       <input type="hidden" id="editExpenseId">
 
-      <div class="form-grid">
         <div class="field">
           <label for="expenseCategory">카테고리</label>
           <select id="expenseCategory" required>
@@ -177,23 +176,17 @@
           <label>지출 날짜</label>
 
           <div class="expense-date-range">
-            <input
-              id="expenseStartDate"
-              type="date"
-              aria-label="시작일"
-              required
-            >
+            <div class="field">
+              <label for="expenseStartDate">시작일</label>
+              <input id="expenseStartDate" type="date" required>
+            </div>
 
-            <span class="date-separator">~</span>
-
-            <input
-              id="expenseEndDate"
-              type="date"
-              aria-label="종료일"
-            >
+            <div class="field">
+              <label for="expenseEndDate">종료일 (선택)</label>
+              <input id="expenseEndDate" type="date">
+            </div>
           </div>
         </div>
-      </div>
 
       <div class="field">
         <label for="expenseName">지출 내용</label>
