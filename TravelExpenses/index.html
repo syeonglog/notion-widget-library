@@ -123,70 +123,105 @@
       </div>
     </section>
 
-    <!-- 지출 추가 -->
-    <section class="add-section">
+    <!-- 지출 추가 버튼 -->
+<section class="add-section">
+  <button
+    type="button"
+    id="openExpenseBtn"
+    class="primary-btn add-expense-btn"
+  >
+    + 지출 추가하기
+  </button>
+</section>
+
+<!-- 지출 추가/수정 모달 -->
+<div
+  id="expenseModal"
+  class="modal-overlay hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="expenseFormTitle"
+>
+  <div class="modal-content">
+    <div class="modal-header">
       <h2 id="expenseFormTitle">새 지출 추가</h2>
 
-      <form id="expenseForm">
-        <input type="hidden" id="editExpenseId">
+      <button
+        type="button"
+        id="closeExpenseModalBtn"
+        class="modal-close"
+        aria-label="닫기"
+      >
+        ×
+      </button>
+    </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label for="expenseCategory">카테고리</label>
-            <select id="expenseCategory" required>
-              <option value="교통">교통</option>
-              <option value="숙박">숙박</option>
-              <option value="식비">식비</option>
-              <option value="카페">카페</option>
-              <option value="관광">관광</option>
-              <option value="쇼핑">쇼핑</option>
-              <option value="기타">기타</option>
-            </select>
-          </div>
+    <form id="expenseForm">
+      <input type="hidden" id="editExpenseId">
 
-          <div class="field">
-            <label for="expenseDate">지출 날짜</label>
-            <input id="expenseDate" type="date" required>
-          </div>
+      <div class="form-grid">
+        <div class="field">
+          <label for="expenseCategory">카테고리</label>
+          <select id="expenseCategory" required>
+            <option value="교통">교통</option>
+            <option value="숙박">숙박</option>
+            <option value="식비">식비</option>
+            <option value="카페">카페</option>
+            <option value="관광">관광</option>
+            <option value="쇼핑">쇼핑</option>
+            <option value="기타">기타</option>
+          </select>
         </div>
 
         <div class="field">
-          <label for="expenseName">지출 내용</label>
-          <input
-            id="expenseName"
-            type="text"
-            maxlength="80"
-            placeholder="예: 저녁 식사"
-            required
-          >
+          <label for="expenseDate">지출 날짜</label>
+          <input id="expenseDate" type="date" required>
         </div>
+      </div>
 
-        <div class="field">
-          <label for="expenseAmount">금액</label>
-          <input
-            id="expenseAmount"
-            type="number"
-            min="1"
-            step="1"
-            placeholder="금액을 입력해 주세요"
-            required
-          >
-        </div>
+      <div class="field">
+        <label for="expenseName">지출 내용</label>
+        <input
+          id="expenseName"
+          type="text"
+          maxlength="80"
+          placeholder="예: 저녁 식사"
+          required
+        >
+      </div>
 
-        <div class="form-actions expense-actions">
-          <button
-            type="button"
-            id="cancelExpenseBtn"
-            class="secondary-btn hidden"
-          >
-            수정 취소
-          </button>
-          <button type="submit" class="primary-btn" id="saveExpenseBtn">
-            + 지출 추가하기
-          </button>
-        </div>
-      </form>
-    </section>
+      <div class="field">
+        <label for="expenseAmount">금액</label>
+        <input
+          id="expenseAmount"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="금액을 입력해 주세요"
+          required
+        >
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          id="cancelExpenseBtn"
+          class="secondary-btn"
+        >
+          취소
+        </button>
+
+        <button
+          type="submit"
+          id="saveExpenseBtn"
+          class="primary-btn"
+        >
+          저장하기
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
   </main>
 </body>
 </html>

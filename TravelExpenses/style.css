@@ -324,6 +324,30 @@ h3 {
 .expense-list {
   display: flex;
   flex-direction: column;
+
+  max-height: 300px;
+  overflow-y: auto;
+
+  padding-right: 5px;
+}
+
+/* 스크롤바 디자인 */
+
+.expense-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.expense-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.expense-list::-webkit-scrollbar-thumb {
+  background: #d5d5d5;
+  border-radius: 10px;
+}
+
+.expense-list::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
 }
 
 .expense-item {
@@ -543,5 +567,246 @@ h3 {
   .category-amount {
     width: 85px;
     font-size: 12px;
+  }
+}
+
+/* ==============================
+   지출 추가 버튼
+============================== */
+
+.add-section {
+  margin-top: 22px;
+}
+
+.add-expense-btn {
+  display: block;
+  width: 100%;
+  height: 44px;
+
+  background: #777777;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: background 0.2s ease;
+}
+
+.add-expense-btn:hover {
+  background: #606060;
+}
+
+
+/* ==============================
+   모달 배경
+============================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 16px;
+
+  background: rgba(40, 40, 40, 0.35);
+
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+
+/* ==============================
+   모달 본체
+============================== */
+
+.modal-content {
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100dvh - 32px);
+
+  margin: auto;
+  padding: 22px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.10);
+
+  overflow-y: auto;
+
+  animation: modalAppear 0.2s ease;
+}
+
+
+/* ==============================
+   모달 헤더
+============================== */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 650;
+
+  color: #444444;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  background: #f3f3f3;
+  border: none;
+  border-radius: 8px;
+
+  color: #888888;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #eaeaea;
+  color: #555555;
+}
+
+
+/* ==============================
+   모달 입력창
+============================== */
+
+.modal-content .field {
+  margin-bottom: 15px;
+}
+
+.modal-content .field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #777777;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.modal-content .field input,
+.modal-content .field select {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 12px;
+
+  background: #f7f7f7;
+
+  border: 1px solid #eeeeee;
+  border-radius: 9px;
+
+  color: #444444;
+  font-size: 14px;
+}
+
+.modal-content .field input:focus,
+.modal-content .field select:focus {
+  outline: none;
+  border-color: #aaaaaa;
+  background: #ffffff;
+}
+
+
+/* ==============================
+   모달 버튼
+============================== */
+
+.modal-content .form-actions {
+  display: flex;
+  gap: 9px;
+
+  margin-top: 21px;
+}
+
+.modal-content .secondary-btn {
+  flex: 1;
+
+  background: #eeeeee;
+  color: #666666;
+}
+
+.modal-content .primary-btn {
+  flex: 2;
+
+  background: #777777;
+  color: #ffffff;
+}
+
+
+/* ==============================
+   모달 애니메이션
+============================== */
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ==============================
+   작은 화면 대응
+============================== */
+
+@media (max-width: 420px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-content {
+    padding: 18px;
+    max-height: calc(100dvh - 24px);
+  }
+
+  .modal-header h2 {
+    font-size: 16px;
+  }
+
+  .modal-content .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content {
+    animation: none;
   }
 }

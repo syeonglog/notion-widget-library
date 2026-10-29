@@ -471,7 +471,45 @@ $("confirmDeleteBtn").addEventListener("click", () => {
   render();
 });
 
-/* 지출 폼 초기화 */
+/* ==============================
+   지출 모달 관리
+============================== */
+
+const expenseModal = $("expenseModal");
+
+let previousFocus = null;
+
+function openExpenseModal() {
+  previousFocus = document.activeElement;
+
+  expenseModal.classList.remove("hidden");
+
+  document.body.style.overflow = "hidden";
+
+  $("expenseName").focus();
+}
+
+function closeExpenseModal() {
+  expenseModal.classList.add("hidden");
+
+  document.body.style.overflow = "";
+
+  resetExpenseForm();
+
+  if (
+    previousFocus &&
+    document.contains(previousFocus)
+  ) {
+    previousFocus.focus();
+  }
+
+  previousFocus = null;
+}
+
+
+/* ==============================
+   지출 폼 초기화
+============================== */
 
 function resetExpenseForm() {
   $("expenseForm").reset();
@@ -480,16 +518,85 @@ function resetExpenseForm() {
   $("expenseDate").value = today();
 
   $("expenseFormTitle").textContent = "새 지출 추가";
-  $("saveExpenseBtn").textContent = "+ 지출 추가하기";
-
-  $("cancelExpenseBtn").classList.add("hidden");
+  $("saveExpenseBtn").textContent = "저장하기";
 }
 
-$("cancelExpenseBtn").addEventListener("click", () => {
+
+/* ==============================
+   모달 열기
+============================== */
+
+$("openExpenseBtn").addEventListener("click", () => {
   resetExpenseForm();
+  openExpenseModal();
 });
 
-/* 지출 추가 및 수정 */
+
+/* ==============================
+   모달 닫기
+============================== */
+
+$("closeExpenseModalBtn").addEventListener(
+  "click",
+  closeExpenseModal
+);
+
+$("cancelExpenseBtn").addEventListener(
+  "click",
+  closeExpenseModal
+);
+
+
+/* 모달 바깥 영역 클릭 시 닫기 */
+
+expenseModal.addEventListener("click", (event) => {
+  if (event.target === expenseModal) {
+    closeExpenseModal();
+  }
+});
+
+
+/* ESC 키로 모달 닫기, Tab 포커스 유지 */
+
+document.addEventListener("keydown", (event) => {
+  if (expenseModal.classList.contains("hidden")) {
+    return;
+  }
+
+  if (event.key === "Escape") {
+    closeExpenseModal();
+    return;
+  }
+
+  if (event.key !== "Tab") return;
+
+  const focusable = Array.from(
+    expenseModal.querySelectorAll(
+      "button:not(:disabled), input:not(:disabled), select:not(:disabled)"
+    )
+  ).filter(el => el.getClientRects().length > 0);
+
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (
+    !event.shiftKey &&
+    document.activeElement === last
+  ) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+
+
+/* ==============================
+   지출 추가 및 수정
+============================== */
 
 $("expenseForm").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -533,12 +640,21 @@ $("expenseForm").addEventListener("submit", (event) => {
     });
   }
 
-  saveData();
-  resetExpenseForm();
+  const saved = saveData();
+
+  if (!saved) {
+    alert("데이터 저장에 실패했어요. 브라우저 저장 공간을 확인해 주세요.");
+    return;
+  }
+
   render();
+  closeExpenseModal();
 });
 
-/* 지출 수정 및 삭제 버튼 */
+
+/* ==============================
+   지출 수정 및 삭제
+============================== */
 
 $("expenseList").addEventListener("click", (event) => {
   const button = event.target.closest(
@@ -548,6 +664,7 @@ $("expenseList").addEventListener("click", (event) => {
   if (!button) return;
 
   const trip = currentTrip();
+
   const id = button.dataset.id;
   const action = button.dataset.action;
 
@@ -557,19 +674,19 @@ $("expenseList").addEventListener("click", (event) => {
 
   if (!expense) return;
 
+  /* 지출 삭제 */
+
   if (action === "delete") {
     trip.expenses = trip.expenses.filter(
       item => item.id !== id
     );
 
-    if ($("editExpenseId").value === id) {
-      resetExpenseForm();
-    }
-
     saveData();
     render();
     return;
   }
+
+  /* 지출 수정 */
 
   if (action === "edit") {
     $("editExpenseId").value = expense.id;
@@ -582,18 +699,14 @@ $("expenseList").addEventListener("click", (event) => {
     $("expenseFormTitle").textContent = "지출 내역 수정";
     $("saveExpenseBtn").textContent = "변경사항 저장";
 
-    $("cancelExpenseBtn").classList.remove("hidden");
-
-    $("expenseForm").scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-
-    $("expenseName").focus();
+    openExpenseModal();
   }
 });
 
-/* 초기 실행 */
+
+/* ==============================
+   초기 실행
+============================== */
 
 resetExpenseForm();
 render();
