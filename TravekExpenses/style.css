@@ -1,0 +1,547 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f5f5f5;
+  --surface-dark: #eeeeee;
+  --border: #e8e8e8;
+  --text: #414141;
+  --text-secondary: #777777;
+  --text-muted: #999999;
+  --accent: #777777;
+  --accent-dark: #555555;
+  --danger: #aa7777;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Apple SD Gothic Neo",
+    "Malgun Gothic",
+    sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #9c9c9c;
+  outline-offset: 2px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 전체 위젯 */
+
+.widget {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 22px;
+  background: #ffffff;
+  border-radius: var(--radius);
+}
+
+/* 헤더 */
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 5px;
+  color: #999999;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f2f2f2;
+  color: #777777;
+  font-size: 23px;
+}
+
+/* 여행 선택 */
+
+.trip-section {
+  margin-bottom: 20px;
+}
+
+.trip-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.trip-selector select {
+  flex: 1;
+  min-width: 0;
+  height: 43px;
+  padding: 0 12px;
+  background: #f5f5f5;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  color: #444444;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.icon-btn {
+  width: 43px;
+  height: 43px;
+  border: none;
+  border-radius: 10px;
+  background: #eeeeee;
+  color: #555555;
+  font-size: 23px;
+}
+
+.trip-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.text-btn {
+  padding: 2px 0;
+  background: transparent;
+  border: none;
+  color: #888888;
+  font-size: 12px;
+}
+
+.text-btn:hover {
+  color: #444444;
+}
+
+.text-btn.danger {
+  color: #aa7777;
+}
+
+/* 예산 카드 */
+
+.budget-card {
+  padding: 20px;
+  border-radius: 14px;
+  background: #f4f4f4;
+}
+
+.budget-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 23px;
+}
+
+.budget-top span {
+  color: #858585;
+  font-size: 13px;
+}
+
+.budget-top strong {
+  color: #555555;
+  font-size: 16px;
+}
+
+.budget-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 19px;
+}
+
+.budget-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-label {
+  color: #888888;
+  font-size: 12px;
+}
+
+.budget-stats strong {
+  color: #444444;
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+  overflow-wrap: anywhere;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: #dddddd;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 20px;
+  background: #777777;
+  transition: width 0.25s ease;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  color: #888888;
+  font-size: 12px;
+}
+
+/* 카테고리 요약 */
+
+.category-section {
+  margin-top: 27px;
+}
+
+.category-section h2 {
+  margin-bottom: 13px;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-name {
+  width: 38px;
+  flex-shrink: 0;
+  color: #777777;
+  font-size: 13px;
+}
+
+.category-track {
+  flex: 1;
+  height: 7px;
+  border-radius: 20px;
+  background: #eeeeee;
+  overflow: hidden;
+}
+
+.category-fill {
+  height: 100%;
+  background: #999999;
+  border-radius: 20px;
+}
+
+.category-amount {
+  width: 100px;
+  text-align: right;
+  color: #555555;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* 지출 내역 */
+
+.expense-section {
+  margin-top: 28px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.count-badge {
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: #f0f0f0;
+  color: #888888;
+  font-size: 12px;
+}
+
+.expense-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.expense-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: #f2f2f2;
+  color: #777777;
+  font-size: 18px;
+}
+
+.expense-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.expense-name {
+  color: #444444;
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.expense-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 3px;
+  color: #929292;
+  font-size: 12px;
+}
+
+.expense-amount {
+  flex-shrink: 0;
+  color: #444444;
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.expense-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.small-btn {
+  padding: 5px;
+  border: none;
+  background: transparent;
+  color: #999999;
+  font-size: 12px;
+}
+
+.small-btn:hover {
+  color: #444444;
+}
+
+.empty-message {
+  padding: 28px 0;
+  text-align: center;
+  color: #aaaaaa;
+  font-size: 13px;
+}
+
+/* 입력 폼 */
+
+.add-section {
+  margin-top: 27px;
+}
+
+.add-section h2 {
+  margin-bottom: 15px;
+}
+
+.form-panel,
+.delete-confirm {
+  margin-top: 13px;
+  padding: 15px;
+  background: #f7f7f7;
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+}
+
+.form-panel label,
+.field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #888888;
+  font-size: 12px;
+}
+
+.form-panel input,
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  height: 43px;
+  padding: 0 12px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 9px;
+  color: #444444;
+  font-size: 14px;
+}
+
+.form-panel input {
+  margin-bottom: 13px;
+}
+
+.form-panel input:last-of-type {
+  margin-bottom: 0;
+}
+
+.field {
+  margin-bottom: 13px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.primary-btn,
+.secondary-btn,
+.delete-btn {
+  min-height: 42px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.primary-btn {
+  flex: 1;
+  background: #777777;
+  color: #ffffff;
+}
+
+.primary-btn:hover {
+  background: #606060;
+}
+
+.secondary-btn {
+  background: #eeeeee;
+  color: #666666;
+}
+
+.delete-btn {
+  background: #aa7777;
+  color: white;
+}
+
+.delete-confirm p {
+  margin: 0;
+  font-size: 13px;
+  color: #666666;
+}
+
+.expense-actions .primary-btn {
+  width: 100%;
+}
+
+/* 반응형 */
+
+@media (max-width: 420px) {
+  .widget {
+    padding: 17px;
+  }
+
+  .budget-card {
+    padding: 16px;
+  }
+
+  .budget-stats strong {
+    font-size: 18px;
+  }
+
+  .expense-item {
+    gap: 8px;
+  }
+
+  .expense-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .expense-name,
+  .expense-amount {
+    font-size: 14px;
+  }
+
+  .expense-buttons {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .category-amount {
+    width: 85px;
+    font-size: 12px;
+  }
+}

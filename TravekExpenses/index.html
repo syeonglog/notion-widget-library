@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Expenses</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="widget">
+    <header class="widget-header">
+      <div>
+        <p class="eyebrow">TRAVEL EXPENSES</p>
+        <h1>여행 경비 기록</h1>
+      </div>
+      <div class="header-icon">✈</div>
+    </header>
+
+    <!-- 여행 선택 -->
+    <section class="trip-section">
+      <div class="trip-selector">
+        <select id="tripSelect" aria-label="여행 선택"></select>
+        <button id="addTripBtn" class="icon-btn" title="여행 추가">
+          +
+        </button>
+      </div>
+
+      <div class="trip-actions">
+        <button id="editTripBtn" class="text-btn">여행 정보 수정</button>
+        <button id="deleteTripBtn" class="text-btn danger">
+          여행 삭제
+        </button>
+      </div>
+
+      <!-- 여행 추가/수정 폼 -->
+      <form id="tripForm" class="form-panel hidden">
+        <h3 id="tripFormTitle">새 여행 등록</h3>
+
+        <label for="tripName">여행 이름</label>
+        <input
+          id="tripName"
+          type="text"
+          maxlength="40"
+          placeholder="예: 제주도 여행"
+          required
+        >
+
+        <label for="tripBudget">여행 예산</label>
+        <input
+          id="tripBudget"
+          type="number"
+          min="0"
+          step="1"
+          placeholder="예: 500000"
+          required
+        >
+
+        <div class="form-actions">
+          <button type="button" id="cancelTripBtn" class="secondary-btn">
+            취소
+          </button>
+          <button type="submit" class="primary-btn">
+            저장
+          </button>
+        </div>
+      </form>
+
+      <div id="deleteConfirm" class="delete-confirm hidden">
+        <p>이 여행과 모든 지출 내역을 삭제할까?</p>
+        <div class="form-actions">
+          <button id="cancelDeleteBtn" class="secondary-btn">취소</button>
+          <button id="confirmDeleteBtn" class="delete-btn">삭제</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 예산 요약 -->
+    <section class="budget-card">
+      <div class="budget-top">
+        <span>총 여행 예산</span>
+        <strong id="totalBudget">0원</strong>
+      </div>
+
+      <div class="budget-stats">
+        <div>
+          <span class="stat-label">사용한 금액</span>
+          <strong id="spentAmount">0원</strong>
+        </div>
+        <div>
+          <span class="stat-label">남은 금액</span>
+          <strong id="remainingAmount">0원</strong>
+        </div>
+      </div>
+
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div class="progress-info">
+        <span>예산 사용률</span>
+        <span id="usagePercent">0%</span>
+      </div>
+    </section>
+
+    <!-- 카테고리별 지출 -->
+    <section class="category-section">
+      <h2>카테고리별 지출</h2>
+      <div id="categorySummary" class="category-list"></div>
+    </section>
+
+    <!-- 지출 내역 -->
+    <section class="expense-section">
+      <div class="section-header">
+        <h2>지출 내역</h2>
+        <span id="expenseCount" class="count-badge">0건</span>
+      </div>
+
+      <div id="expenseList" class="expense-list"></div>
+
+      <div id="emptyMessage" class="empty-message">
+        아직 등록된 지출이 없어요.
+      </div>
+    </section>
+
+    <!-- 지출 추가 -->
+    <section class="add-section">
+      <h2 id="expenseFormTitle">새 지출 추가</h2>
+
+      <form id="expenseForm">
+        <input type="hidden" id="editExpenseId">
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="expenseCategory">카테고리</label>
+            <select id="expenseCategory" required>
+              <option value="교통">교통</option>
+              <option value="숙박">숙박</option>
+              <option value="식비">식비</option>
+              <option value="카페">카페</option>
+              <option value="관광">관광</option>
+              <option value="쇼핑">쇼핑</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="expenseDate">지출 날짜</label>
+            <input id="expenseDate" type="date" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="expenseName">지출 내용</label>
+          <input
+            id="expenseName"
+            type="text"
+            maxlength="80"
+            placeholder="예: 저녁 식사"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="expenseAmount">금액</label>
+          <input
+            id="expenseAmount"
+            type="number"
+            min="1"
+            step="1"
+            placeholder="금액을 입력해 주세요"
+            required
+          >
+        </div>
+
+        <div class="form-actions expense-actions">
+          <button
+            type="button"
+            id="cancelExpenseBtn"
+            class="secondary-btn hidden"
+          >
+            수정 취소
+          </button>
+          <button type="submit" class="primary-btn" id="saveExpenseBtn">
+            + 지출 추가하기
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
