@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Moon Phase</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="moon-widget">
+
+        <header class="header">
+            <span class="eyebrow">TONIGHT'S MOON</span>
+            <span class="sparkle">✧</span>
+        </header>
+
+        <section class="moon-content">
+
+            <div class="moon-visual">
+                <canvas id="moonCanvas"
+                        width="180"
+                        height="180">
+                </canvas>
+            </div>
+
+            <div class="moon-info">
+
+                <p id="moonName" class="moon-name">
+                    Waxing Crescent
+                </p>
+
+                <p id="moonNameKo" class="moon-name-ko">
+                    차오르는 초승달
+                </p>
+
+                <div class="illumination">
+                    <span id="moonPercent">0%</span>
+                    <small>illuminated</small>
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            <span>A little light in the night.</span>
+            <span id="moonDate"></span>
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+/* ==============================
+   기본 설정
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #FFFFFF;
+    font-family:
+        "Pretendard",
+        "Noto Sans KR",
+        sans-serif;
+    color: #705C53;
+}
+
+body {
+    padding: 4px;
+}
+
+/* ==============================
+   Moon Widget
+============================== */
+
+.moon-widget {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+
+    background: #F9F8F6;
+    border: 1px solid #EFE9E3;
+    border-radius: 12px;
+
+    padding: 14px 15px;
+}
+
+/* ==============================
+   Header
+============================== */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    color: #A9968A;
+}
+
+.sparkle {
+    font-size: 17px;
+    font-weight: 400;
+    color: #C5ADA0;
+}
+
+/* ==============================
+   Moon Content
+============================== */
+
+.moon-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 달 이미지 영역 */
+
+.moon-visual {
+    width: 88px;
+    height: 88px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #EFEBE8;
+    border-radius: 50%;
+}
+
+#moonCanvas {
+    width: 76px;
+    height: 76px;
+}
+
+/* ==============================
+   Moon Information
+============================== */
+
+.moon-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.moon-name {
+    margin: 0 0 5px;
+
+    font-size: 13px;
+    font-weight: 400;
+    color: #705C53;
+}
+
+.moon-name-ko {
+    margin: 0 0 9px;
+
+    font-size: 10px;
+    font-weight: 400;
+    color: #A99A91;
+}
+
+/* 달 밝기 */
+
+.illumination {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+#moonPercent {
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: -0.7px;
+    color: #705C53;
+}
+
+.illumination small {
+    font-size: 9px;
+    font-weight: 400;
+    color: #B4A69C;
+}
+
+/* ==============================
+   Footer
+============================== */
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 14px;
+    padding-top: 10px;
+
+    border-top: 1px solid #E8E1DC;
+
+    font-size: 9px;
+    font-weight: 400;
+    color: #A99A91;
+}
+
+#moonDate {
+    white-space: nowrap;
+}
+
+/* ==============================
+   좁은 화면 대응
+============================== */
+
+@media (max-width: 250px) {
+
+    .moon-widget {
+        padding: 12px;
+    }
+
+    .moon-content {
+        gap: 8px;
+    }
+
+    .moon-visual {
+        width: 70px;
+        height: 70px;
+    }
+
+    #moonCanvas {
+        width: 62px;
+        height: 62px;
+    }
+
+    .moon-name {
+        font-size: 11px;
+    }
+
+    #moonPercent {
+        font-size: 20px;
+    }
+
+    .footer {
+        font-size: 8px;
+    }
+}
+
+/* ==============================
+   Moon Widget 폰트 크기 조정
+============================== */
+
+/* 상단 제목 */
+.eyebrow {
+    font-size: 12px;
+}
+
+/* 달 이름 (영어) */
+.moon-name {
+    font-size: 15px;
+}
+
+/* 달 이름 (한국어) */
+.moon-name-ko {
+    font-size: 12px;
+}
+
+/* 달 밝기 숫자 */
+#moonPercent {
+    font-size: 26px;
+}
+
+/* illuminated */
+.illumination small {
+    font-size: 11px;
+}
+
+/* 하단 문구 및 날짜 */
+.footer {
+    font-size: 11px;
+}
+
+/* 좁은 화면에서도 글씨 크기 유지 */
+@media (max-width: 250px) {
+    .moon-name {
+        font-size: 14px;
+    }
+
+    #moonPercent {
+        font-size: 24px;
+    }
+
+    .footer {
+        font-size: 10px;
+    }
+}
