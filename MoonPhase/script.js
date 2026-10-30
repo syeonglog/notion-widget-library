@@ -150,7 +150,7 @@ function drawMoon(phase) {
 
     ctx.clip();
 
-    ctx.fillStyle = "#F5E6C5";
+    ctx.fillStyle = "#FFF4D6";
 
     // 가로 한 줄씩 달의 밝은 부분을 그림
     for (let y = -radius; y <= radius; y += 0.5) {

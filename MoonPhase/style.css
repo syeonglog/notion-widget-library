@@ -20,7 +20,7 @@ body {
 }
 
 body {
-    padding: 4px;
+    padding: 0;
 }
 
 /* ==============================
@@ -29,14 +29,14 @@ body {
 
 .moon-widget {
     width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
 
     background: #F9F8F6;
     border: 1px solid #EFE9E3;
     border-radius: 12px;
 
-    padding: 14px 15px;
+    padding: 16px;
 }
 
 /* ==============================
