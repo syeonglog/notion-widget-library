@@ -27,17 +27,16 @@ function render() {
         );
     });
 
-    const titles = {
-        today: "Today's Tasks",
-        tomorrow: "Tomorrow's Tasks",
-        someday: "Someday Tasks",
-        overdue: "Overdue Tasks",
-        history: "Completed Tasks"
-    };
+    // const titles = {
+    //     today: "Today's Tasks",
+    //     tomorrow: "Tomorrow's Tasks",
+    //     someday: "Someday Tasks",
+    //     overdue: "Overdue Tasks",
+    // };
 
-    $("viewTitle").textContent = titles[currentView];
+    // $("viewTitle").textContent = titles[currentView];
 
-    $("addButton").hidden = currentView === "history";
+    $("addButton").hidden = false;
 
     renderCategories();
     renderTasks();
