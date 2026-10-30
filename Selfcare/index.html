@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Wellness</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="widget">
+
+    <!-- Daily Wellness -->
+    <section class="wellness">
+      <header class="section-header">
+        <h1>Daily Wellness</h1>
+        <span class="eyebrow">TAKE CARE OF YOURSELF</span>
+      </header>
+
+      <div class="wellness-grid">
+
+        <article class="metric-card">
+          <div class="metric-label">
+            <span>☾</span>
+            <span>Sleep</span>
+          </div>
+
+          <div class="metric-value">
+            <span id="sleepValue">0.0</span>
+            <small>hours</small>
+          </div>
+
+          <div class="metric-controls">
+            <button id="sleepMinus" aria-label="수면 시간 줄이기">−</button>
+            <button id="sleepPlus" aria-label="수면 시간 늘리기">+</button>
+          </div>
+        </article>
+
+        <article class="metric-card">
+          <div class="metric-label">
+            <span>♧</span>
+            <span>Water</span>
+          </div>
+
+          <div class="metric-value">
+            <span id="waterValue">0</span>
+            <small id="waterGoal">/ 8 cups</small>
+          </div>
+
+          <div class="metric-controls">
+            <button id="waterMinus" aria-label="물 한 잔 줄이기">−</button>
+            <button id="waterPlus" aria-label="물 한 잔 추가">+</button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Weekly Habits -->
+    <section class="habits-section">
+      <header class="section-header">
+        <h2>Weekly Habits</h2>
+        <button class="text-button" id="manageHabits">
+          EDIT +
+        </button>
+      </header>
+
+      <div class="week-navigation">
+        <button id="prevWeek" aria-label="이전 주">‹</button>
+        <span id="weekLabel"></span>
+        <button id="nextWeek" aria-label="다음 주">›</button>
+      </div>
+
+      <div class="habit-list">
+        <div class="habit-row habit-heading">
+          <span>Habit</span>
+          <div class="day-grid">
+            <span>M</span>
+            <span>T</span>
+            <span>W</span>
+            <span>T</span>
+            <span>F</span>
+            <span>S</span>
+            <span>S</span>
+          </div>
+        </div>
+
+        <div id="habitRows"></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Weekly Balance -->
+    <section class="balance-section">
+      <header class="section-header">
+        <h2>My Weekly Balance</h2>
+        <span class="balance-tag">This week</span>
+      </header>
+
+      <div class="balance-content">
+        <span class="balance-percent" id="balancePercent">0%</span>
+
+        <div class="balance-details">
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p id="balanceDescription">0 of 0 habits completed</p>
+        </div>
+      </div>
+
+      <p class="closing-message">
+        A little progress, every day.
+      </p>
+    </section>
+  </main>
+
+  <!-- Habit 관리 모달 -->
+  <div class="modal-overlay" id="habitModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true"
+         aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h3 id="modalTitle">Manage Habits</h3>
+        <button id="closeModal" class="close-button"
+                aria-label="닫기">×</button>
+      </div>
+
+      <div id="habitEditList" class="habit-edit-list"></div>
+
+      <form id="habitForm" class="habit-form">
+        <input
+          type="text"
+          id="habitInput"
+          placeholder="Add a new habit..."
+          maxlength="60"
+          required
+        >
+        <button type="submit">Add</button>
+      </form>
+
+      <p class="modal-hint">작은 습관부터 하나씩 시작해 보세요.</p>
+    </div>
+  </div>
+</body>
+</html>

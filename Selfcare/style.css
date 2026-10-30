@@ -1,0 +1,576 @@
+
+/* ==============================
+   기본 설정
+============================== */
+
+:root {
+  --background: #ffffff;
+  --surface: #f7f6f4;
+  --surface-light: #ffffff;
+  --surface-muted: #f2efec;
+
+  --text: #514840;
+  --text-secondary: #85796e;
+  --text-muted: #a39a92;
+
+  --accent: #b5a599;
+  --accent-light: #dbd0c5;
+  --accent-dark: #776b5d;
+
+  --border: #eae6e1;
+
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  background: transparent;
+  color: var(--text);
+
+  font-family:
+    "Pretendard",
+    "Noto Sans KR",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ==============================
+   전체 위젯
+============================== */
+
+.widget {
+  width: 100%;
+  max-width: 365px;
+  margin: 0 auto;
+
+  padding: 13px;
+
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+/* ==============================
+   공통 제목
+============================== */
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 13px;
+}
+
+.section-header h1,
+.section-header h2 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+}
+
+.eyebrow {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* ==============================
+   Daily Wellness
+============================== */
+
+.wellness {
+  padding: 13px;
+  background: var(--surface);
+  border-radius: var(--radius);
+}
+
+.wellness-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.metric-card {
+  min-width: 0;
+  padding: 12px;
+
+  background: var(--surface-light);
+  border-radius: 11px;
+}
+
+.metric-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.metric-label span:first-child {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.metric-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px;
+
+  margin-bottom: 12px;
+}
+
+.metric-value > span {
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: -1px;
+}
+
+.metric-value small {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.metric-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.metric-controls button {
+  flex: 1;
+  height: 27px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: var(--surface-muted);
+  color: var(--accent-dark);
+
+  font-size: 17px;
+  font-weight: 400;
+
+  transition: background 0.2s;
+}
+
+.metric-controls button:hover {
+  background: var(--accent-light);
+}
+
+/* ==============================
+   Weekly Habits
+============================== */
+
+.habits-section {
+  padding: 18px 6px 7px;
+}
+
+.text-button {
+  padding: 3px 0;
+  background: transparent;
+  border: none;
+
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.text-button:hover {
+  color: var(--accent-dark);
+}
+
+/* 주차 이동 */
+
+.week-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  margin-bottom: 14px;
+}
+
+.week-navigation span {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.week-navigation button {
+  width: 24px;
+  height: 24px;
+
+  background: transparent;
+  border: none;
+
+  color: var(--accent-dark);
+  font-size: 21px;
+  line-height: 1;
+}
+
+/* 습관 테이블 */
+
+.habit-row {
+  display: grid;
+  grid-template-columns: minmax(68px, 1.15fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 8px;
+}
+
+.habit-heading {
+  margin-bottom: 12px;
+
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.habit-name {
+  min-width: 0;
+
+  font-size: 11px;
+  line-height: 1.35;
+
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.habit-heading .day-grid span {
+  text-align: center;
+  font-size: 10px;
+}
+
+.habit-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 27px;
+  padding: 0;
+
+  border: none;
+  border-radius: 5px;
+
+  background: var(--surface-muted);
+  color: var(--text);
+
+  font-size: 13px;
+
+  transition: background 0.2s;
+}
+
+.habit-check.checked {
+  background: var(--accent-light);
+}
+
+.habit-check:hover {
+  background: #e5dcd3;
+}
+
+.habit-check:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+}
+
+.empty-habits {
+  padding: 16px 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ==============================
+   구분선
+============================== */
+
+.divider {
+  height: 1px;
+  margin: 13px 6px;
+
+  background: var(--border);
+}
+
+/* ==============================
+   Weekly Balance
+============================== */
+
+.balance-section {
+  padding: 2px 6px 8px;
+}
+
+.balance-tag {
+  padding: 3px 9px;
+
+  background: var(--surface);
+  border-radius: 20px;
+
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.balance-content {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.balance-percent {
+  flex-shrink: 0;
+
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--accent-dark);
+}
+
+.balance-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.progress-track {
+  width: 100%;
+  height: 9px;
+
+  background: var(--surface-muted);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+
+  background: var(--accent);
+  border-radius: 20px;
+
+  transition: width 0.3s ease;
+}
+
+.balance-details p {
+  margin: 7px 0 0;
+
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.closing-message {
+  margin: 15px 0 0;
+
+  text-align: center;
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+
+  color: var(--text-muted);
+}
+
+/* ==============================
+   Habit 관리 모달
+============================== */
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px;
+  background: rgba(40, 35, 30, 0.35);
+}
+
+.modal {
+  width: 100%;
+  max-width: 340px;
+  max-height: min(450px, 90vh);
+  overflow-y: auto;
+
+  padding: 18px;
+
+  background: #ffffff;
+  border-radius: 14px;
+
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 17px;
+}
+
+.modal-header h3 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+
+  font-size: 23px;
+  color: var(--text-muted);
+}
+
+.habit-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-bottom: 15px;
+}
+
+.habit-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.habit-edit-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  background: var(--surface);
+  color: var(--text);
+
+  font-size: 12px;
+}
+
+.habit-delete {
+  flex-shrink: 0;
+
+  width: 29px;
+  height: 32px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: var(--surface-muted);
+  color: var(--text-secondary);
+}
+
+.habit-form {
+  display: flex;
+  gap: 7px;
+}
+
+.habit-form input {
+  flex: 1;
+  min-width: 0;
+
+  padding: 9px;
+
+  border: 1px solid var(--border);
+  border-radius: 7px;
+
+  outline: none;
+  font-size: 12px;
+}
+
+.habit-form button {
+  padding: 0 14px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: var(--accent-dark);
+  color: white;
+
+  font-size: 12px;
+}
+
+.modal-hint {
+  margin: 13px 0 0;
+
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+/* ==============================
+   좁은 화면 대응
+============================== */
+
+@media (max-width: 330px) {
+  .widget {
+    padding: 9px;
+  }
+
+  .wellness {
+    padding: 10px;
+  }
+
+  .metric-card {
+    padding: 9px;
+  }
+
+  .habit-row {
+    grid-template-columns: minmax(56px, 1fr) minmax(0, 3fr);
+    gap: 5px;
+  }
+
+  .day-grid {
+    gap: 3px;
+  }
+
+  .habit-check {
+    height: 24px;
+  }
+
+  .eyebrow {
+    font-size: 8px;
+  }
+}
