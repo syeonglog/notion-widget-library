@@ -1,0 +1,169 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>My Little Aquarium</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <main class="widget">
+
+    <!-- HEADER -->
+    <header class="header">
+      <h1>MY LITTLE AQUARIUM</h1>
+
+      <span class="status">
+        <span class="wave" aria-hidden="true">〰</span>
+        Peaceful
+      </span>
+    </header>
+
+    <!-- AQUARIUM -->
+    <section
+      class="aquarium"
+      aria-label="Animated miniature aquarium with swimming fish"
+    >
+      <canvas id="tank" aria-hidden="true"></canvas>
+
+      <span
+        class="surface-shine"
+        aria-hidden="true"
+      ></span>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+      <div class="footer-copy">
+        <div class="footer-title">Little Ocean</div>
+        <p>A peaceful moment underwater.</p>
+      </div>
+
+      <div class="actions">
+
+        <!-- FISH SETTINGS -->
+        <button
+          id="settingsBtn"
+          class="icon-button"
+          type="button"
+          aria-label="Fish settings"
+          aria-expanded="false"
+          aria-controls="settingsPanel"
+          title="Fish settings"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 12c3.5-5 9.5-6 14-.8L21 8v8l-4-3.2C12.5 18 6.5 17 3 12Z"
+            />
+            <circle
+              cx="8"
+              cy="11"
+              r=".7"
+              fill="currentColor"
+              stroke="none"
+            />
+          </svg>
+        </button>
+
+        <!-- FEED -->
+        <button
+          id="feedBtn"
+          class="feed-button"
+          type="button"
+        >
+          <span aria-hidden="true">✦</span>
+          Feed
+        </button>
+
+      </div>
+    </footer>
+
+    <!-- SETTINGS PANEL -->
+    <section
+      id="settingsPanel"
+      class="settings"
+      aria-label="Fish settings"
+      hidden
+    >
+
+      <div class="settings-head">
+        <span>Little fish friends</span>
+
+        <button
+          id="closeSettings"
+          class="close-button"
+          type="button"
+          aria-label="Close settings"
+        >
+          ×
+        </button>
+      </div>
+
+      <!-- FISH COUNT -->
+      <div class="setting-row">
+        <label for="fishCount">
+          How many fish?
+        </label>
+
+        <div class="stepper">
+
+          <button
+            id="decrease"
+            type="button"
+            aria-label="Remove one fish"
+          >
+            −
+          </button>
+
+          <output
+            id="fishCount"
+            aria-live="polite"
+          >
+            3
+          </output>
+
+          <button
+            id="increase"
+            type="button"
+            aria-label="Add one fish"
+          >
+            +
+          </button>
+
+        </div>
+      </div>
+
+      <!-- FISH COLORS -->
+      <div class="setting-row">
+        <span>Fish colors</span>
+
+        <div
+          id="colorSettings"
+          class="color-settings"
+        ></div>
+      </div>
+
+      <p class="settings-tip">
+        Choose a color for each little friend ♡
+      </p>
+
+    </section>
+
+  </main>
+</body>
+</html>
