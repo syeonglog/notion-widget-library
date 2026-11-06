@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Little Feed</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="widget">
+
+    <article class="post">
+
+      <!-- 프로필 -->
+      <header class="post-header">
+        <div class="profile">
+          <div class="avatar" id="avatar">
+            <span>♡</span>
+          </div>
+
+          <div class="profile-info">
+            <div class="username" id="username">little.moments</div>
+            <div class="post-date" id="postDate">My little diary</div>
+          </div>
+        </div>
+
+        <button class="icon-button" id="editBtn" title="게시글 편집">
+          <svg viewBox="0 0 24 24">
+            <circle cx="5" cy="12" r="1.5"/>
+            <circle cx="12" cy="12" r="1.5"/>
+            <circle cx="19" cy="12" r="1.5"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- 음악 -->
+      <div class="music-wrap">
+        <div class="music-player">
+          <div class="music-icon">♫</div>
+
+          <div class="music-info">
+            <div class="music-title" id="musicTitle">A song for today</div>
+            <div class="music-artist" id="musicArtist">Add your favorite song</div>
+          </div>
+
+          <button class="play-button" id="playBtn" title="음악 재생">
+            <svg id="playIcon" viewBox="0 0 24 24">
+              <path d="M8 5 L19 12 L8 19 Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 사진 -->
+      <section class="photo-area" id="photoArea">
+        <div class="photo-empty" id="photoEmpty">
+          <span class="empty-flower">✿</span>
+          <p>Your little moments</p>
+          <small>사진을 추가해 보세요</small>
+          <button id="addPhotoBtn">+ Add photos</button>
+        </div>
+
+        <img id="postImage" alt="게시글 사진" hidden>
+
+        <button class="photo-arrow prev" id="prevBtn" aria-label="이전 사진">
+          ‹
+        </button>
+        <button class="photo-arrow next" id="nextBtn" aria-label="다음 사진">
+          ›
+        </button>
+
+        <div class="photo-count" id="photoCount"></div>
+      </section>
+
+      <!-- 게시글 하단 -->
+      <div class="post-body">
+
+        
+        <div class="action-bar">
+        <div class="action-left">
+
+            <!-- 좋아요 -->
+            <button class="icon-button" id="likeBtn" title="좋아요">
+            <svg viewBox="0 0 24 24">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+            </button>
+
+            <!-- 댓글 -->
+            <button class="icon-button" id="commentBtn" title="댓글">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3a8.5 8.5 0 0 1 8.5 8.5z"/>
+            </svg>
+            </button>
+
+            <!-- 공유 -->
+            <button class="icon-button" id="shareBtn" title="공유">
+            <svg viewBox="0 0 24 24">
+                <path d="M22 2 11 13"/>
+                <path d="m22 2-7 20-4-9-9-4z"/>
+            </svg>
+            </button>
+
+        </div>
+
+        <!-- 사진 슬라이드 표시 -->
+        <div class="photo-dots" id="photoDots"></div>
+
+        <!-- 북마크 -->
+        <button class="icon-button" id="bookmarkBtn" title="북마크">
+            <svg viewBox="0 0 24 24">
+            <path d="M5 3h14v18l-7-5-7 5z"/>
+            </svg>
+        </button>
+        </div>
+
+
+<div class="caption-area">
+  <p class="caption"><span class="caption-username" id="captionUsername">little.moments</span> <span id="captionText">오늘의 작은 순간들을 기록해요 ♡</span></p>
+</div>
+
+        <!-- <p class="footer-text">A LITTLE PIECE OF TODAY</p> -->
+      </div>
+    </article>
+
+    <!-- 편집 모달 -->
+    <div class="modal-overlay" id="editModal" hidden>
+      <section class="edit-modal">
+
+        <div class="modal-header">
+          <h2>Edit your moment</h2>
+          <button class="close-btn" id="closeModalBtn">×</button>
+        </div>
+
+        <div class="modal-content">
+
+          <label class="field-label">Profile photo</label>
+          <input type="file" id="avatarInput" accept="image/*">
+
+          <label class="field-label" for="usernameInput">Username</label>
+          <input type="text" id="usernameInput" maxlength="35">
+
+          <label class="field-label" for="dateInput">Date / Location</label>
+          <input type="text" id="dateInput" maxlength="60">
+
+          <label class="field-label">Photos</label>
+          <input type="file" id="photosInput" accept="image/*" multiple>
+          <p class="field-help">새 사진을 선택하면 기존 사진을 교체해요.</p>
+          <button class="sub-button" id="removePhotosBtn">
+            Remove all photos
+          </button>
+
+          <div class="field-divider"></div>
+
+          <label class="field-label" for="musicTitleInput">Song title</label>
+          <input type="text" id="musicTitleInput">
+
+          <label class="field-label" for="musicArtistInput">Artist</label>
+          <input type="text" id="musicArtistInput">
+
+          <label class="field-label">Audio file</label>
+          <input type="file" id="audioInput" accept="audio/*">
+          <p class="field-help" id="audioStatus">
+            MP3 등의 음악 파일을 추가할 수 있어요.
+          </p>
+          <button class="sub-button" id="removeAudioBtn">
+            Remove music file
+          </button>
+
+          <div class="field-divider"></div>
+
+          <label class="field-label" for="captionInput">Caption</label>
+          <textarea id="captionInput" rows="5"></textarea>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="save-button" id="saveBtn">
+            Save changes ♡
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
