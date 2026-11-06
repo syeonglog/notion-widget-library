@@ -38,7 +38,10 @@
       <!-- 음악 -->
       <div class="music-wrap">
         <div class="music-player">
-          <div class="music-icon">♫</div>
+          <div class="music-icon" id="musicCover">
+            <span id="musicPlaceholder">♫</span>
+            <img id="musicCoverImage" alt="앨범 커버" hidden>
+          </div>
 
           <div class="music-info">
             <div class="music-title" id="musicTitle">A song for today</div>
@@ -153,6 +156,24 @@
           </button>
 
           <div class="field-divider"></div>
+
+          <label class="field-label" for="musicCoverInput">
+            Album cover
+          </label>
+
+          <input
+            type="file"
+            id="musicCoverInput"
+            accept="image/*"
+          >
+
+          <p class="field-help">
+            앨범 커버 이미지를 추가하거나 변경할 수 있어요.
+          </p>
+
+          <button class="sub-button" id="removeMusicCoverBtn">
+            Remove album cover
+          </button>
 
           <label class="field-label" for="musicTitleInput">Song title</label>
           <input type="text" id="musicTitleInput">

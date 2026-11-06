@@ -36,6 +36,9 @@ let removeAudioPending = false;
 let db = null;
 let toastTimer = null;
 
+let musicCoverURL = null;
+let removeMusicCoverPending = false;
+
 /* ==============================
    데이터베이스
 ============================== */
@@ -318,6 +321,34 @@ function toggleBookmark() {
   renderActions();
 }
 
+
+/* ==============================
+   앨범 커버 표시
+============================== */
+
+function renderMusicCover(blob) {
+  const image = $("musicCoverImage");
+  const placeholder = $("musicPlaceholder");
+
+  if (musicCoverURL) {
+    URL.revokeObjectURL(musicCoverURL);
+    musicCoverURL = null;
+  }
+
+  if (blob) {
+    musicCoverURL = URL.createObjectURL(blob);
+
+    image.src = musicCoverURL;
+    image.hidden = false;
+    placeholder.hidden = true;
+  } else {
+    image.removeAttribute("src");
+    image.hidden = true;
+    placeholder.hidden = false;
+  }
+}
+
+
 /* ==============================
    편집 모달
 ============================== */
@@ -333,6 +364,14 @@ function openEditModal() {
   $("avatarInput").value = "";
   $("photosInput").value = "";
   $("audioInput").value = "";
+
+  // 앨범 커버 편집 초기화
+  $("musicCoverInput").value = "";
+
+  removeMusicCoverPending = false;
+
+  $("removeMusicCoverBtn").textContent =
+    "Remove album cover";
 
   removePhotosPending = false;
   removeAudioPending = false;
@@ -421,6 +460,7 @@ async function saveChanges() {
     const avatarFile = $("avatarInput").files[0];
     const photoFiles = Array.from($("photosInput").files);
     const audioFile = $("audioInput").files[0];
+    const musicCoverFile = $("musicCoverInput").files[0];
 
     // 파일 먼저 처리
     let newAvatar = null;
@@ -465,6 +505,21 @@ async function saveChanges() {
     } else if (removeAudioPending) {
       await dbDelete("audio");
       setAudio(null);
+    }
+
+    // 앨범 커버 저장 및 변경
+    if (musicCoverFile) {
+      const optimizedCover = await optimizeImage(
+        musicCoverFile,
+        500
+      );
+
+      await dbSet("musicCover", optimizedCover);
+      renderMusicCover(optimizedCover);
+
+    } else if (removeMusicCoverPending) {
+      await dbDelete("musicCover");
+      renderMusicCover(null);
     }
 
     // 텍스트 저장
@@ -533,6 +588,10 @@ async function initialize() {
     }
 
     setAudio(savedAudio || null);
+    
+    const savedMusicCover = await dbGet("musicCover");
+
+    renderMusicCover(savedMusicCover || null); 
 
   } catch (error) {
     console.error("초기화 실패:", error);
@@ -609,6 +668,32 @@ $("audioInput").addEventListener("change", () => {
   }
 });
 
+/* ==============================
+   앨범 커버 삭제
+============================== */
+
+$("removeMusicCoverBtn").addEventListener("click", () => {
+  removeMusicCoverPending = !removeMusicCoverPending;
+
+  if (removeMusicCoverPending) {
+    $("musicCoverInput").value = "";
+  }
+
+  $("removeMusicCoverBtn").textContent =
+    removeMusicCoverPending
+      ? "✓ Album cover will be removed"
+      : "Remove album cover";
+});
+
+// 새로운 이미지를 선택하면 삭제 예약 취소
+$("musicCoverInput").addEventListener("change", () => {
+  if ($("musicCoverInput").files.length > 0) {
+    removeMusicCoverPending = false;
+
+    $("removeMusicCoverBtn").textContent =
+      "Remove album cover";
+  }
+});
 
 // 댓글 버튼: 댓글 입력 영역 표시
 
