@@ -1,0 +1,555 @@
+
+/* ==============================
+   Color Palette
+============================== */
+
+:root {
+  --bg: #FEFBF6;
+  --header: #F3EEEA;
+  --accent: #B3A398;
+  --accent-dark: #8E786B;
+
+  --text: #655C59;
+  --text-light: #9B908A;
+
+  --border: #E5DFDA;
+  --tag: #F5F2EF;
+
+  --white: #FFFFFF;
+}
+
+
+/* ==============================
+   Reset
+============================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family:
+    "Pretendard",
+    "Noto Sans KR",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: transparent;
+  color: var(--text);
+}
+
+
+/* ==============================
+   Widget
+============================== */
+
+.widget {
+  width: 100%;
+  height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--bg);
+
+  border: 1px solid var(--border);
+  border-radius: 15px;
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   Header
+============================== */
+
+.widget-header {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 14px;
+
+  background: var(--header);
+}
+
+.header-text {
+  min-width: 0;
+}
+
+.header-text h1 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  line-height: 1.4;
+  color: var(--accent-dark);
+}
+
+.header-text p {
+  margin: 3px 0 0;
+
+  font-size: 10px;
+  font-weight: 400;
+
+  line-height: 1.4;
+  color: var(--accent);
+}
+
+
+/* Add Button */
+
+.add-btn {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--accent-dark);
+
+  font-size: 23px;
+  font-weight: 300;
+
+  cursor: pointer;
+
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background: #E9E2DC;
+}
+
+
+/* ==============================
+   Quote List
+============================== */
+
+.quote-list {
+  flex: 1;
+  min-height: 0;
+
+  padding: 0 14px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #D8CCC4 transparent;
+}
+
+
+/* Chrome / Edge Scrollbar */
+
+.quote-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.quote-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quote-list::-webkit-scrollbar-thumb {
+  background: #D8CCC4;
+  border-radius: 10px;
+}
+
+
+/* ==============================
+   Quote Item
+============================== */
+
+.quote-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px dashed #EAE5E1;
+}
+
+.quote-item:last-child {
+  border-bottom: none;
+}
+
+.quote-content {
+  flex: 1;
+  min-width: 0;
+
+  cursor: pointer;
+}
+
+.quote-text {
+  margin: 0 0 7px;
+
+  font-size: 12.5px;
+  font-weight: 400;
+
+  line-height: 1.6;
+  color: var(--text);
+
+  overflow-wrap: anywhere;
+}
+
+.quote-content:hover .quote-text {
+  color: var(--accent-dark);
+}
+
+
+/* ==============================
+   Movie Tags
+============================== */
+
+.quote-meta {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 4px 8px;
+
+  border-radius: 20px;
+
+  background: var(--tag);
+
+  font-size: 10px;
+  font-weight: 400;
+
+  line-height: 1.2;
+  color: var(--accent);
+
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.movie-tag {
+  gap: 4px;
+}
+
+.movie-icon {
+  font-size: 10px;
+}
+
+
+/* ==============================
+   Bookmark Button
+============================== */
+
+.bookmark-btn {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #F1F0EF;
+  color: #A8A19D;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.bookmark-btn:hover {
+  transform: scale(1.06);
+}
+
+.bookmark-btn.active {
+  background: #DDBDB4;
+  color: white;
+}
+
+
+/* ==============================
+   Empty State
+============================== */
+
+.empty-state {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  text-align: center;
+}
+
+.empty-state[hidden] {
+  display: none;
+}
+
+.empty-state p {
+  margin: 0 0 7px;
+
+  font-size: 13px;
+  color: var(--text);
+}
+
+.empty-state span {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+
+/* ==============================
+   Modal Overlay
+============================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px;
+
+  background: rgba(60, 48, 41, 0.35);
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+
+/* ==============================
+   Modal
+============================== */
+
+.modal {
+  width: 100%;
+  max-width: 360px;
+
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+
+  padding: 18px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  box-shadow: 0 8px 30px rgba(60, 48, 41, 0.12);
+}
+
+
+/* Modal Header */
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  color: var(--accent-dark);
+}
+
+.close-btn {
+  border: none;
+  background: transparent;
+
+  font-size: 22px;
+  color: var(--text-light);
+
+  cursor: pointer;
+}
+
+
+/* ==============================
+   Form
+============================== */
+
+.form-group {
+  margin-bottom: 13px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 11px;
+  font-weight: 400;
+
+  color: var(--accent-dark);
+}
+
+.form-group input,
+.form-group textarea {
+  display: block;
+
+  width: 100%;
+
+  padding: 10px 11px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  outline: none;
+
+  background: white;
+
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+
+  resize: vertical;
+}
+
+.form-group textarea {
+  min-height: 65px;
+  max-height: 150px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #B8AFA9;
+}
+
+
+/* ==============================
+   Modal Buttons
+============================== */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.action-right {
+  display: flex;
+  gap: 7px;
+
+  margin-left: auto;
+}
+
+.form-actions button {
+  padding: 8px 13px;
+
+  border: none;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: var(--header);
+  color: var(--text);
+}
+
+.save-btn {
+  background: var(--accent);
+  color: white;
+}
+
+.save-btn:hover {
+  background: var(--accent-dark);
+}
+
+.delete-btn {
+  background: transparent;
+  color: #C38D85;
+}
+
+.delete-btn:hover {
+  background: #F7EAE7;
+}
+
+
+/* ==============================
+   Responsive
+============================== */
+
+@media (max-width: 320px) {
+
+  .widget-header {
+    padding: 11px 12px;
+  }
+
+  .quote-list {
+    padding: 0 12px;
+  }
+
+  .quote-text {
+    font-size: 12px;
+  }
+
+  .meta-tag {
+    font-size: 9px;
+  }
+
+  .modal {
+    padding: 14px;
+  }
+
+}

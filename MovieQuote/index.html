@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinema Notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="widget">
+
+    <!-- Header -->
+    <header class="widget-header">
+      <div class="header-text">
+        <h1>Cinema Notes</h1>
+        <p>Words That Stay</p>
+      </div>
+
+      <button
+        id="addBtn"
+        class="add-btn"
+        type="button"
+        aria-label="명언 추가"
+        title="Add a quote"
+      >
+        +
+      </button>
+    </header>
+
+    <!-- Quote list -->
+    <section class="quote-list" id="quoteList"></section>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState" hidden>
+      <p>아직 저장한 문장이 없어요.</p>
+      <span>마음에 남은 영화 속 문장을 기록해 보세요 ♡</span>
+    </div>
+
+  </main>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <div
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+
+      <div class="modal-header">
+        <h2 id="modalTitle">Add a little line</h2>
+
+        <button
+          id="closeModalBtn"
+          class="close-btn"
+          type="button"
+          aria-label="닫기"
+        >
+          &times;
+        </button>
+      </div>
+
+      <form id="quoteForm">
+
+        <div class="form-group">
+          <label for="quoteInput">Favorite line</label>
+          <textarea
+            id="quoteInput"
+            rows="3"
+            placeholder="마음에 남은 영화 속 문장"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="movieInput">Movie title</label>
+          <input
+            id="movieInput"
+            type="text"
+            placeholder="영화 제목"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="yearInput">Release year</label>
+          <input
+            id="yearInput"
+            type="number"
+            min="1888"
+            max="2200"
+            placeholder="예: 2013"
+          >
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="deleteBtn"
+            class="delete-btn"
+            type="button"
+            hidden
+          >
+            Delete
+          </button>
+
+          <div class="action-right">
+            <button
+              id="cancelBtn"
+              class="cancel-btn"
+              type="button"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="save-btn"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
