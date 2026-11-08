@@ -1,0 +1,267 @@
+/* ==============================
+   기본 설정
+============================== */
+
+:root {
+    --primary: #B0A695;
+    --white: #FFFFFF;
+    --beige: #F3EEEA;
+    --gray: #F4F4F4;
+
+    --text: #554D47;
+    --subtext: #8E8378;
+    --border: #D8D3CD;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, "Malgun Gothic", sans-serif;
+    background: transparent;
+    padding: 0;
+    color: var(--text);
+}
+
+
+/* ==============================
+   Widget
+============================== */
+
+.widget {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+
+    padding: 15px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: 0 3px 10px rgba(70, 58, 45, 0.035);
+}
+
+
+/* ==============================
+   Header
+============================== */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.header h1 {
+    font-family: Georgia, serif;
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.favorite-btn {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: var(--gray);
+
+    border: 1px solid #E7E4E1;
+    border-radius: 50%;
+
+    color: var(--primary);
+    font-size: 21px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.favorite-btn:hover {
+    background: var(--beige);
+}
+
+.favorite-btn.active {
+    color: #A66E67;
+    background: var(--beige);
+}
+
+
+/* ==============================
+   Filters
+============================== */
+
+.filters {
+    display: flex;
+    gap: 7px;
+
+    margin-bottom: 11px;
+}
+
+.filters select {
+    flex: 1;
+    width: 50%;
+    min-width: 0;
+
+    padding: 8px 5px;
+
+    background: var(--gray);
+
+    border: 1px solid #E9E7E4;
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 11px;
+    color: #655F5A;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.filters select:focus {
+    border-color: var(--primary);
+}
+
+
+/* ==============================
+   Recommendation Card
+============================== */
+
+.recommendation {
+    width: 100%;
+    min-height: 112px;
+
+    padding: 17px 7px 16px;
+
+    background: var(--beige);
+
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+}
+
+.recommendation-label {
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 1.1px;
+
+    color: #A09689;
+}
+
+.recommendation-label span {
+    font-size: 11px;
+}
+
+.recommendation h2 {
+    margin: 13px 0 10px;
+
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.4px;
+    line-height: 1.4;
+
+    color: var(--text);
+    word-break: keep-all;
+}
+
+.menu-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    font-size: 10px;
+    color: var(--subtext);
+}
+
+.dot {
+    opacity: 0.6;
+}
+
+
+/* ==============================
+   Shuffle Button
+============================== */
+
+.shuffle-btn {
+    width: 100%;
+
+    margin-top: 11px;
+    padding: 11px 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    background: var(--primary);
+
+    border: none;
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--white);
+
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.shuffle-btn:hover {
+    background: #9C9180;
+}
+
+.shuffle-btn:active {
+    transform: scale(0.99);
+}
+
+.shuffle-icon {
+    font-size: 16px;
+    line-height: 0.8;
+}
+
+
+/* ==============================
+   Responsive
+============================== */
+
+@media (max-width: 300px) {
+    .widget {
+        padding: 12px;
+    }
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .recommendation h2 {
+        font-size: 16px;
+    }
+
+    .filters select {
+        font-size: 10px;
+    }
+}

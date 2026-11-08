@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What to cook?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="widget">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>What to cook?</h1>
+
+            <button
+                id="favoriteBtn"
+                class="favorite-btn"
+                type="button"
+                aria-label="현재 메뉴 즐겨찾기"
+                aria-pressed="false"
+                title="즐겨찾기 추가"
+            >
+                ♡
+            </button>
+        </header>
+
+        <!-- Filters -->
+        <section class="filters">
+
+            <select id="categoryFilter" aria-label="음식 종류">
+                <option value="전체">전체 요리</option>
+                <option value="한식">한식</option>
+                <option value="양식">양식</option>
+                <option value="일식">일식</option>
+                <option value="중식">중식</option>
+                <option value="기타">기타</option>
+                <option value="즐겨찾기">즐겨찾기</option>
+            </select>
+
+            <select id="timeFilter" aria-label="조리 시간">
+                <option value="all">조리 시간</option>
+                <option value="15">15분 이내</option>
+                <option value="30">30분 이내</option>
+                <option value="60">60분 이내</option>
+                <option value="all">시간 무관</option>
+            </select>
+
+        </section>
+
+        <!-- Recommendation -->
+        <section class="recommendation">
+
+            <p class="recommendation-label">
+                TODAY'S PICK <span>✦</span>
+            </p>
+
+            <h2 id="menuName">토마토 달걀볶음</h2>
+
+            <div class="menu-info">
+                <span id="menuCategory">중식</span>
+                <span class="dot">·</span>
+                <span id="menuTime">10 min</span>
+                <span class="dot">·</span>
+                <span id="menuDifficulty">쉬움</span>
+            </div>
+
+        </section>
+
+        <!-- Shuffle -->
+        <button id="shuffleBtn" class="shuffle-btn" type="button">
+            <span class="shuffle-icon">↻</span>
+            다른 메뉴 추천받기
+        </button>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
