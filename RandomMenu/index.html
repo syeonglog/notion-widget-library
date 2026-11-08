@@ -10,22 +10,6 @@
 
     <main class="widget">
 
-        <!-- Header -->
-        <header class="header">
-            <h1>What to cook?</h1>
-
-            <button
-                id="favoriteBtn"
-                class="favorite-btn"
-                type="button"
-                aria-label="현재 메뉴 즐겨찾기"
-                aria-pressed="false"
-                title="즐겨찾기 추가"
-            >
-                ♡
-            </button>
-        </header>
-
         <!-- Filters -->
         <section class="filters">
 
@@ -68,11 +52,26 @@
 
         </section>
 
-        <!-- Shuffle -->
-        <button id="shuffleBtn" class="shuffle-btn" type="button">
-            <span class="shuffle-icon">↻</span>
-            다른 메뉴 추천받기
-        </button>
+        <!-- Shuffle & Favorite -->
+        <div class="button-group">
+
+            <button id="shuffleBtn" class="shuffle-btn" type="button">
+                <span class="shuffle-icon">↻</span>
+                다른 메뉴 추천받기
+            </button>
+
+            <button
+                id="favoriteBtn"
+                class="favorite-btn"
+                type="button"
+                aria-label="현재 메뉴 즐겨찾기"
+                aria-pressed="false"
+                title="즐겨찾기 추가"
+            >
+                ♡
+            </button>
+
+        </div>
 
     </main>
 
