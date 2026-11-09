@@ -716,6 +716,25 @@ function moveBook(draggedId, targetId, insertAfter) {
     renderBookshelf();
 }
 
+/* ==========================================
+   Deselect Book
+========================================== */
+
+// 책장 빈 공간 클릭 시 선택 해제
+$("bookshelf").addEventListener("click", event => {
+
+    // 책 표지나 Add Book 버튼 클릭 시에는 실행하지 않음
+    if (event.target.closest(".book-card, .add-book-card")) {
+        return;
+    }
+
+    // 선택된 책 해제
+    selectedBookId = null;
+
+    // 책장 및 상세 정보 갱신
+    renderBookshelf();
+});
+
 function renderBookshelf() {
     const container = $("bookshelf");
 
