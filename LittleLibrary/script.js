@@ -900,8 +900,7 @@ function renderSelectedBook() {
 
     const deleteButton = $("deleteBookButton");
 
-    deleteButton.textContent =
-        pendingDeleteId === book.id ? "삭제 확인" : "×";
+    deleteButton.textContent = "×";
 
     deleteButton.onclick = () => {
         deleteBook(book.id);
