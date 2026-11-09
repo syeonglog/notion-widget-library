@@ -660,56 +660,61 @@ function renderGoal() {
    Bookshelf Drag Scroll
 ========================================== */
 
-const bookshelfScroller = $("bookshelf");
+/* ==========================================
+   Bookshelf Reorder
+========================================== */
 
-let dragStartX = 0;
-let dragStartScrollLeft = 0;
-let isDraggingBookshelf = false;
-let hasDraggedBookshelf = false;
+let draggedBookId = null;
+let suppressBookClick = false;
 
-// 마우스 드래그 시작
-bookshelfScroller.addEventListener("pointerdown", event => {
-    if (event.pointerType !== "mouse" || event.button !== 0) return;
+// 드래그 위치 표시 제거
+function clearDropMarkers() {
+    document.querySelectorAll(
+        ".book-card.drop-before, .book-card.drop-after"
+    ).forEach(card => {
+        card.classList.remove(
+            "drop-before",
+            "drop-after"
+        );
+    });
+}
 
-    dragStartX = event.clientX;
-    dragStartScrollLeft = bookshelfScroller.scrollLeft;
+// 책 순서 변경 및 저장
+function moveBook(draggedId, targetId, insertAfter) {
+    const previous = [...books];
 
-    isDraggingBookshelf = true;
-    hasDraggedBookshelf = false;
-});
+    const from = books.findIndex(
+        book => book.id === draggedId
+    );
 
-// 마우스를 움직이면 가로 스크롤
-window.addEventListener("pointermove", event => {
-    if (!isDraggingBookshelf) return;
+    const target = books.findIndex(
+        book => book.id === targetId
+    );
 
-    const distance = event.clientX - dragStartX;
-
-    if (Math.abs(distance) > 5) {
-        hasDraggedBookshelf = true;
-        bookshelfScroller.classList.add("dragging");
+    if (from < 0 || target < 0 || from === target) {
+        return;
     }
 
-    if (hasDraggedBookshelf) {
-        bookshelfScroller.scrollLeft =
-            dragStartScrollLeft - distance;
+    const [moved] = books.splice(from, 1);
+
+    const targetAfterRemoval = books.findIndex(
+        book => book.id === targetId
+    );
+
+    books.splice(
+        targetAfterRemoval + (insertAfter ? 1 : 0),
+        0,
+        moved
+    );
+
+    // 변경된 순서 저장
+    if (!saveBooks()) {
+        books = previous;
+        return;
     }
-});
 
-// 마우스 드래그 종료
-window.addEventListener("pointerup", () => {
-    isDraggingBookshelf = false;
-    bookshelfScroller.classList.remove("dragging");
-});
-
-// 드래그 후 책이 실수로 선택되지 않도록 방지
-bookshelfScroller.addEventListener("click", event => {
-    if (!hasDraggedBookshelf) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    hasDraggedBookshelf = false;
-}, true);
+    renderBookshelf();
+}
 
 function renderBookshelf() {
     const container = $("bookshelf");
@@ -722,11 +727,16 @@ function renderBookshelf() {
         button.type = "button";
         button.className = "book-card";
 
+        // 드래그 가능하도록 설정
+        button.draggable = true;
+        button.dataset.bookId = book.id;
+
         if (book.id === selectedBookId) {
             button.classList.add("selected");
         }
 
         const cover = getCoverElement(book);
+        cover.draggable = false;
 
         const title = document.createElement("span");
 
@@ -735,14 +745,92 @@ function renderBookshelf() {
 
         button.append(cover, title);
 
+        // 책 클릭 시 상세 정보 표시
         button.onclick = () => {
+            if (suppressBookClick) return;
+
             selectedBookId = book.id;
             renderBookshelf();
         };
 
+        // 드래그 시작
+        button.addEventListener("dragstart", event => {
+            draggedBookId = book.id;
+            suppressBookClick = true;
+
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData(
+                "text/plain",
+                book.id
+            );
+
+            button.classList.add("dragging");
+        });
+
+        // 드래그 중 위치 표시
+        button.addEventListener("dragover", event => {
+            if (
+                !draggedBookId ||
+                draggedBookId === book.id
+            ) {
+                return;
+            }
+
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+
+            clearDropMarkers();
+
+            const rect = button.getBoundingClientRect();
+            const after = event.clientX > (
+                rect.left + rect.width / 2
+            );
+
+            button.classList.add(
+                after ? "drop-after" : "drop-before"
+            );
+        });
+
+        // 책을 놓으면 순서 변경
+        button.addEventListener("drop", event => {
+            if (!draggedBookId) return;
+
+            event.preventDefault();
+
+            const rect = button.getBoundingClientRect();
+            const after = event.clientX > (
+                rect.left + rect.width / 2
+            );
+
+            moveBook(
+                draggedBookId,
+                book.id,
+                after
+            );
+
+            clearDropMarkers();
+
+            setTimeout(() => {
+                suppressBookClick = false;
+            }, 0);
+        });
+
+        // 드래그 종료
+        button.addEventListener("dragend", () => {
+            draggedBookId = null;
+
+            button.classList.remove("dragging");
+            clearDropMarkers();
+
+            setTimeout(() => {
+                suppressBookClick = false;
+            }, 0);
+        });
+
         container.appendChild(button);
     });
 
+    // Add Book 버튼
     const addButton = document.createElement("button");
 
     addButton.type = "button";

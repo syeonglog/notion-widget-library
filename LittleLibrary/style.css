@@ -233,14 +233,31 @@ textarea:focus-visible {
     scrollbar-width: thin;
     scrollbar-color: var(--line-dark) transparent;
 
-    cursor: grab;
     touch-action: pan-x;
 }
 
-.bookshelf.dragging {
-    cursor: grabbing;
-    user-select: none;
+/* 책 표지 드래그 */
+
+.book-card {
+    cursor: grab;
 }
+
+.book-card.dragging {
+    cursor: grabbing;
+    opacity: 0.45;
+}
+
+/* 책을 놓을 위치 표시 */
+
+.book-card.drop-before {
+    box-shadow: -3px 0 0 var(--brown);
+}
+
+.book-card.drop-after {
+    box-shadow: 3px 0 0 var(--brown);
+}
+
+/* 책을 한 줄로 진열 */
 
 .bookshelf > * {
     flex: 0 0 var(--book-width);
