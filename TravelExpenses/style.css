@@ -20,6 +20,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
 }
 
 body {
@@ -59,14 +64,19 @@ select:focus-visible {
 }
 
 /* 전체 위젯 */
-
 .widget {
   width: 100%;
   max-width: 580px;
+  height: 100dvh;
+
   margin: 0 auto;
   padding: 22px;
+
   background: #ffffff;
   border-radius: var(--radius);
+
+  display: flex;
+  flex-direction: column;
 }
 
 /* 헤더 */
@@ -304,6 +314,12 @@ h3 {
 
 .expense-section {
   margin-top: 28px;
+
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .section-header {
@@ -325,7 +341,10 @@ h3 {
   display: flex;
   flex-direction: column;
 
-  max-height: 300px;
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+
   overflow-y: auto;
 
   padding-right: 5px;
