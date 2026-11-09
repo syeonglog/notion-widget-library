@@ -19,12 +19,22 @@
 <body>
     <main class="widget">
 
-        <!-- Header -->
-        <header class="widget-header">
-            <div class="header-text">
-                <h1>D-Day Tracker</h1>
-                <p>COUNTING THE DAYS</p>
-            </div>
+
+    <!-- Header -->
+    <header class="widget-header">
+
+        <div class="header-text">
+            <p>COUNTING THE DAYS</p>
+        </div>
+
+        <div class="header-actions">
+            <button
+                id="toggle-past-btn"
+                class="text-button"
+                type="button"
+            >
+                Show Past
+            </button>
 
             <button
                 id="add-event-btn"
@@ -33,31 +43,22 @@
                 aria-label="일정 추가"
                 title="Add Event"
             >+</button>
-        </header>
+        </div>
 
-        <!-- 일정 목록 -->
-        <section class="events-section">
+    </header>
 
-            <div class="section-header">
-                <h2>Upcoming Events</h2>
+    <!-- 일정 목록 -->
+    <section class="events-section">
 
-                <button
-                    id="toggle-past-btn"
-                    class="text-button"
-                    type="button"
-                >
-                    Show Past
-                </button>
-            </div>
+        <div id="events-grid" class="events-grid"></div>
 
-            <div id="events-grid" class="events-grid"></div>
+        <div id="empty-state" class="empty-state" hidden>
+            <p>No events yet</p>
+            <span>Click + to add your first event.</span>
+        </div>
 
-            <div id="empty-state" class="empty-state" hidden>
-                <p>No events yet</p>
-                <span>Click + to add your first event.</span>
-            </div>
+    </section>
 
-        </section>
 
         <!-- 일정 편집창 -->
         <section
