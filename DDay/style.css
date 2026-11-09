@@ -233,7 +233,7 @@ button:disabled {
     margin: 8px 0 6px;
 
     color: var(--color-text);
-    font-size: clamp(38px, 10vw, 45px);
+    font-size: clamp(30px, 8vw, 36px);
     font-weight: 800;
 
     letter-spacing: -2px;
