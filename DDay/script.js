@@ -1,113 +1,79 @@
 
 "use strict";
 
-/* =========================================
-   1. Constants & Default State
-========================================= */
+/* ========================================
+   1. Settings
+======================================== */
 
 const STORAGE_KEY = "notion-dday-tracker-v1";
 
-const DEFAULT_STATE = {
-    events: [],
-    selectedId: null,
-    showPast: false
-};
+const DEFAULT_TEXT_COLOR = "#333333";
+const DEFAULT_BG_COLOR = "#F7F7F7";
 
 const $ = (id) => document.getElementById(id);
 
 const elements = {
-    addButton: $("add-event-btn"),
+    addBtn: $("add-event-btn"),
+    togglePastBtn: $("toggle-past-btn"),
 
-    mainEmpty: $("main-empty"),
-    mainContent: $("main-content"),
-    mainName: $("main-event-name"),
-    mainDday: $("main-dday"),
-    mainDate: $("main-event-date"),
-    mainNote: $("main-event-note"),
+    grid: $("events-grid"),
+    empty: $("empty-state"),
 
     editor: $("editor-panel"),
     editorTitle: $("editor-title"),
-    closeEditor: $("close-editor-btn"),
-    cancelEditor: $("cancel-editor-btn"),
+    closeBtn: $("close-editor-btn"),
+    cancelBtn: $("cancel-editor-btn"),
+
     form: $("event-form"),
-    nameInput: $("event-name"),
-    dateInput: $("event-date"),
-    noteInput: $("event-note"),
-    formError: $("form-error"),
-    saveButton: $("save-event-btn"),
+    name: $("event-name"),
+    date: $("event-date"),
+    note: $("event-note"),
 
-    eventsList: $("events-list"),
-    listEmpty: $("list-empty"),
-    eventCount: $("event-count"),
-    togglePast: $("toggle-past-btn"),
+    textColor: $("event-text-color"),
+    bgColor: $("event-bg-color"),
+    textSwatch: $("text-color-swatch"),
+    bgSwatch: $("bg-color-swatch"),
 
-    liveStatus: $("live-status")
+    preview: $("event-preview"),
+    previewName: $("preview-name"),
+    previewDday: $("preview-dday"),
+    previewDate: $("preview-date"),
+
+    deleteBtn: $("delete-event-btn"),
+    error: $("form-error")
 };
 
 let state = loadState();
-
-// Null means Add mode.
-// Otherwise it contains the event ID being edited.
 let editingId = null;
+let deletePending = false;
 
-// Remember which button opened the editor.
-let editorReturnFocus = null;
-
-// Used to detect local calendar date changes.
-let lastKnownDate = getLocalToday();
-
-
-/* =========================================
+/* ========================================
    2. Date Utilities
-========================================= */
+======================================== */
 
-/**
- * Return local calendar date as YYYY-MM-DD.
- * Avoid toISOString() because it uses UTC.
- */
-function getLocalToday() {
+function getTodayString() {
     const now = new Date();
 
     const year = now.getFullYear();
-    const month = String(
-        now.getMonth() + 1
-    ).padStart(2, "0");
-
-    const day = String(
-        now.getDate()
-    ).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
 }
 
-/**
- * Validate an actual calendar date.
- * Invalid dates such as February 30 are rejected.
- */
-function isValidDate(dateString) {
+function isValidDate(value) {
     if (
-        typeof dateString !== "string" ||
-        !/^\d{4}-\d{2}-\d{2}$/.test(dateString)
+        typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(value)
     ) {
         return false;
     }
 
-    const [year, month, day] =
-        dateString.split("-").map(Number);
+    const [year, month, day] = value.split("-").map(Number);
 
-    if (
-        year < 1 ||
-        year > 9999 ||
-        month < 1 ||
-        month > 12 ||
-        day < 1 ||
-        day > 31
-    ) {
-        return false;
-    }
+    if (year < 1 || year > 9999) return false;
 
     const date = new Date(0);
-
     date.setFullYear(year, month - 1, day);
     date.setHours(12, 0, 0, 0);
 
@@ -118,71 +84,36 @@ function isValidDate(dateString) {
     );
 }
 
-/**
- * Convert a calendar date to a UTC day number.
- *
- * UTC is used only for date arithmetic.
- * The user's local date is obtained separately.
- *
- * This prevents DST-related 23/25-hour errors.
- */
-function dateToDayNumber(dateString) {
-    const [year, month, day] =
-        dateString.split("-").map(Number);
+function toDayNumber(value) {
+    const [year, month, day] = value.split("-").map(Number);
 
     const date = new Date(0);
-
     date.setUTCHours(0, 0, 0, 0);
     date.setUTCFullYear(year, month - 1, day);
 
-    return Math.round(
-        date.getTime() / 86400000
-    );
+    return Math.round(date.getTime() / 86400000);
 }
 
-/**
- * Return signed calendar-day difference.
- *
- * Positive = future
- * Zero     = today
- * Negative = past
- */
-function getDayDifference(targetDate) {
-    const today = getLocalToday();
-
+function getDayDifference(dateString) {
     return (
-        dateToDayNumber(targetDate) -
-        dateToDayNumber(today)
+        toDayNumber(dateString) -
+        toDayNumber(getTodayString())
     );
 }
 
-/**
- * Format D-Day label.
- */
-function getDdayLabel(dateString) {
+function formatDday(dateString) {
     const diff = getDayDifference(dateString);
 
-    if (diff === 0) {
-        return "D-Day";
-    }
-
-    if (diff > 0) {
-        return `D-${diff}`;
-    }
+    if (diff === 0) return "D-Day";
+    if (diff > 0) return `D-${diff}`;
 
     return `D+${Math.abs(diff)}`;
 }
 
-/**
- * Format target date for main card.
- * Example: 2026.11.09 MON
- */
-function formatMainDate(dateString) {
-    const [year, month, day] =
-        dateString.split("-").map(Number);
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split("-").map(Number);
 
     const date = new Date(0);
-
     date.setFullYear(year, month - 1, day);
     date.setHours(12, 0, 0, 0);
 
@@ -199,64 +130,56 @@ function formatMainDate(dateString) {
     );
 }
 
-/**
- * Format list date.
- * Example: 2026.10.28
- */
-function formatListDate(dateString) {
-    return dateString.replaceAll("-", ".");
+/* ========================================
+   3. Colors
+======================================== */
+
+function normalizeColor(value, fallback) {
+    if (typeof value !== "string") return fallback;
+
+    const color = value.trim();
+
+    if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+        return color.toUpperCase();
+    }
+
+    return fallback;
 }
 
+function isValidColor(value) {
+    return /^#[0-9a-fA-F]{6}$/.test(value.trim());
+}
 
-/* =========================================
-   3. ID Generation
-========================================= */
+/* ========================================
+   4. Storage
+======================================== */
 
 function createId() {
-    if (
-        window.crypto &&
-        typeof crypto.randomUUID === "function"
-    ) {
+    if (window.crypto && crypto.randomUUID) {
         return crypto.randomUUID();
     }
 
     return (
-        "event-" +
-        Date.now() +
+        Date.now().toString(36) +
         "-" +
         Math.random().toString(36).slice(2)
     );
 }
 
-
-/* =========================================
-   4. Local Storage
-========================================= */
-
-/**
- * Safely restore saved state.
- * Malformed event records are ignored.
- */
 function loadState() {
     const fallback = {
-        ...DEFAULT_STATE,
-        events: []
+        events: [],
+        showPast: false
     };
 
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
 
-        if (!raw) {
-            return fallback;
-        }
+        if (!raw) return fallback;
 
         const parsed = JSON.parse(raw);
 
-        if (
-            !parsed ||
-            typeof parsed !== "object" ||
-            Array.isArray(parsed)
-        ) {
+        if (!parsed || typeof parsed !== "object") {
             return fallback;
         }
 
@@ -267,20 +190,17 @@ function loadState() {
         const usedIds = new Set();
 
         const events = rawEvents
-            .filter((event) => {
-                return (
-                    event &&
-                    typeof event === "object" &&
-                    typeof event.id === "string" &&
-                    event.id.length > 0 &&
-                    typeof event.name === "string" &&
-                    event.name.trim().length > 0 &&
-                    event.name.trim().length <= 100 &&
-                    isValidDate(event.date)
-                );
-            })
+            .filter(event => (
+                event &&
+                typeof event.name === "string" &&
+                event.name.trim().length > 0 &&
+                isValidDate(event.date)
+            ))
             .map((event, index) => {
-                let id = event.id;
+                let id = (
+                    typeof event.id === "string" &&
+                    event.id.length > 0
+                ) ? event.id : createId();
 
                 if (usedIds.has(id)) {
                     id = createId();
@@ -290,56 +210,39 @@ function loadState() {
 
                 return {
                     id,
-                    name: event.name.trim(),
+                    name: event.name.trim().slice(0, 100),
                     date: event.date,
-
                     note: typeof event.note === "string"
                         ? event.note.slice(0, 300)
                         : "",
 
-                    createdAt:
-                        Number.isFinite(event.createdAt)
-                            ? event.createdAt
-                            : index,
+                    textColor: normalizeColor(
+                        event.textColor,
+                        DEFAULT_TEXT_COLOR
+                    ),
 
-                    updatedAt:
-                        Number.isFinite(event.updatedAt)
-                            ? event.updatedAt
-                            : null,
+                    bgColor: normalizeColor(
+                        event.bgColor,
+                        DEFAULT_BG_COLOR
+                    ),
 
-                    order:
-                        Number.isSafeInteger(event.order) &&
-                        event.order >= 0
-                            ? event.order
-                            : index
+                    order: Number.isSafeInteger(event.order)
+                        ? event.order
+                        : index
                 };
             });
 
         return {
             events,
-
-            selectedId:
-                typeof parsed.selectedId === "string"
-                    ? parsed.selectedId
-                    : null,
-
-            showPast:
-                parsed.showPast === true
+            showPast: parsed.showPast === true
         };
 
     } catch (error) {
-        console.warn(
-            "Could not load D-Day data:",
-            error
-        );
-
+        console.warn("Could not load events:", error);
         return fallback;
     }
 }
 
-/**
- * Persist the complete application state.
- */
 function saveState() {
     try {
         localStorage.setItem(
@@ -350,306 +253,268 @@ function saveState() {
         return true;
 
     } catch (error) {
-        console.warn(
-            "Could not save D-Day data:",
-            error
-        );
-
-        announce(
-            "Unable to save changes in this browser."
-        );
-
+        console.warn("Could not save events:", error);
         return false;
     }
 }
 
+/* ========================================
+   5. Event Grid
+======================================== */
 
-/* =========================================
-   5. Event Sorting
-========================================= */
+function getSortedEvents() {
+    return [...state.events].sort((a, b) => {
+        const dateCompare = a.date.localeCompare(b.date);
 
-/**
- * Sorting rules:
- *
- * 1. Today
- * 2. Future, nearest first
- * 3. Past, most recent first
- * 4. Same date: registration order
- */
-function sortEvents(events) {
-    const today = getLocalToday();
+        if (dateCompare !== 0) return dateCompare;
 
-    return [...events].sort((a, b) => {
-        const aPast = a.date < today;
-        const bPast = b.date < today;
-
-        if (aPast !== bPast) {
-            return aPast ? 1 : -1;
-        }
-
-        if (a.date !== b.date) {
-            if (aPast && bPast) {
-                return b.date.localeCompare(a.date);
-            }
-
-            return a.date.localeCompare(b.date);
-        }
-
-        return (
-            a.order - b.order ||
-            a.createdAt - b.createdAt ||
-            a.id.localeCompare(b.id)
-        );
+        return a.order - b.order;
     });
 }
 
+function createEventCard(event) {
+    const card = document.createElement("button");
 
-/* =========================================
-   6. Main Event Selection
-========================================= */
+    card.type = "button";
+    card.className = "event-card";
 
-/**
- * Find the automatic default event.
- *
- * Because sortEvents() places upcoming events
- * first and recent past events afterward,
- * the first item is always the default.
- */
-function getAutomaticEvent() {
-    return sortEvents(state.events)[0] || null;
-}
-
-/**
- * Return currently selected event.
- *
- * If selection is invalid, choose the
- * closest upcoming event automatically.
- */
-function getSelectedEvent() {
-    const selected = state.events.find(
-        event => event.id === state.selectedId
+    card.style.setProperty(
+        "--card-bg",
+        event.bgColor
     );
 
-    if (selected) {
-        return selected;
-    }
-
-    return getAutomaticEvent();
-}
-
-/**
- * Normalize the selected ID.
- *
- * A valid manual selection is always retained,
- * including when the calendar date changes.
- */
-function ensureSelection() {
-    const selected = state.events.find(
-        event => event.id === state.selectedId
+    card.style.setProperty(
+        "--card-text",
+        event.textColor
     );
 
-    if (selected) {
-        return false;
+    if (getDayDifference(event.date) < 0) {
+        card.classList.add("is-past");
     }
 
-    const automatic = getAutomaticEvent();
+    const name = document.createElement("span");
+    name.className = "event-name";
+    name.textContent = event.name;
 
-    const nextId = automatic
-        ? automatic.id
-        : null;
+    const dday = document.createElement("strong");
+    dday.className = "event-dday";
+    dday.textContent = formatDday(event.date);
 
-    if (state.selectedId !== nextId) {
-        state.selectedId = nextId;
-        return true;
-    }
+    const date = document.createElement("span");
+    date.className = "event-date";
+    date.textContent = formatDate(event.date);
 
-    return false;
+    card.append(name, dday, date);
+
+    card.setAttribute(
+        "aria-label",
+        `${event.name}, ${formatDday(event.date)}, 편집하기`
+    );
+
+    // 카드를 클릭하면 편집창 열기
+    card.addEventListener("click", () => {
+        openEditor(event.id);
+    });
+
+    return card;
 }
 
-/**
- * Select an event from the list.
- */
-function selectEvent(id) {
+function renderEvents() {
+    elements.grid.replaceChildren();
+
+    const events = getSortedEvents().filter(event => {
+        if (state.showPast) return true;
+
+        return getDayDifference(event.date) >= 0;
+    });
+
+    events.forEach(event => {
+        elements.grid.appendChild(
+            createEventCard(event)
+        );
+    });
+
+    const isEmpty = events.length === 0;
+
+    elements.empty.hidden = !isEmpty;
+    elements.grid.hidden = isEmpty;
+
+    elements.togglePastBtn.textContent = state.showPast
+        ? "Hide Past"
+        : "Show Past";
+
+    if (isEmpty) {
+        const emptyTitle = elements.empty.querySelector("p");
+        const emptyText = elements.empty.querySelector("span");
+
+        if (state.events.length === 0) {
+            emptyTitle.textContent = "No events yet";
+            emptyText.textContent =
+                "Click + to add your first event.";
+        } else {
+            emptyTitle.textContent = "No upcoming events";
+            emptyText.textContent =
+                "Select Show Past to view previous events.";
+        }
+    }
+}
+
+/* ========================================
+   6. Editor
+======================================== */
+
+function resetDeleteButton() {
+    deletePending = false;
+    elements.deleteBtn.textContent = "Delete";
+}
+
+function openEditor(id = null) {
+    editingId = id;
+    resetDeleteButton();
+
+    elements.error.textContent = "";
+
     const event = state.events.find(
         item => item.id === id
     );
 
-    if (!event) {
-        return;
-    }
-
-    state.selectedId = id;
-
-    saveState();
-    render();
-
-    announce(`${event.name} selected.`);
-}
-
-
-/* =========================================
-   7. Add / Edit Panel
-========================================= */
-
-function clearFormError() {
-    elements.formError.textContent = "";
-    elements.formError.classList.add("hidden");
-}
-
-function showFormError(message) {
-    elements.formError.textContent = message;
-    elements.formError.classList.remove("hidden");
-}
-
-/**
- * Open inline editor.
- *
- * eventId = null -> Add
- * eventId set  -> Edit
- */
-function openEditor(eventId = null) {
-    editingId = eventId;
-
-    const event = eventId
-        ? state.events.find(item => item.id === eventId)
-        : null;
-
-    if (eventId && !event) {
-        return;
-    }
-
-    editorReturnFocus = document.activeElement;
-
     elements.form.reset();
-    clearFormError();
 
     if (event) {
         elements.editorTitle.textContent = "Edit Event";
-        elements.saveButton.textContent = "Save Changes";
 
-        elements.nameInput.value = event.name;
-        elements.dateInput.value = event.date;
-        elements.noteInput.value = event.note;
+        elements.name.value = event.name;
+        elements.date.value = event.date;
+        elements.note.value = event.note || "";
+
+        elements.textColor.value = event.textColor;
+        elements.bgColor.value = event.bgColor;
+
+        elements.deleteBtn.hidden = false;
 
     } else {
         elements.editorTitle.textContent = "Add Event";
-        elements.saveButton.textContent = "Save Event";
 
-        elements.nameInput.value = "";
-        elements.dateInput.value = getLocalToday();
-        elements.noteInput.value = "";
+        elements.name.value = "";
+        elements.date.value = getTodayString();
+        elements.note.value = "";
+
+        elements.textColor.value = DEFAULT_TEXT_COLOR;
+        elements.bgColor.value = DEFAULT_BG_COLOR;
+
+        elements.deleteBtn.hidden = true;
     }
 
-    elements.editor.classList.remove("hidden");
+    elements.editor.hidden = false;
 
-    elements.nameInput.focus();
+    updatePreview();
 
+    elements.name.focus();
     elements.editor.scrollIntoView({
         behavior: "smooth",
         block: "nearest"
     });
 }
 
-/**
- * Close the inline editor.
- */
 function closeEditor() {
-    elements.editor.classList.add("hidden");
-
+    elements.editor.hidden = true;
     editingId = null;
-    clearFormError();
 
-    if (
-        editorReturnFocus &&
-        editorReturnFocus.isConnected
-    ) {
-        editorReturnFocus.focus();
-    }
-
-    editorReturnFocus = null;
+    elements.error.textContent = "";
+    resetDeleteButton();
 }
 
+/* ========================================
+   7. Live Preview
+======================================== */
 
-/* =========================================
-   8. Form Validation & Save
-========================================= */
+function updatePreview() {
+    const name = elements.name.value.trim();
+    const date = elements.date.value;
 
-function validateForm() {
-    const name = elements.nameInput.value.trim();
-    const date = elements.dateInput.value;
-    const note = elements.noteInput.value.trim();
+    const textColor = normalizeColor(
+        elements.textColor.value,
+        DEFAULT_TEXT_COLOR
+    );
 
-    if (!name) {
-        showFormError("Please enter an event name.");
-        elements.nameInput.focus();
-        return null;
+    const bgColor = normalizeColor(
+        elements.bgColor.value,
+        DEFAULT_BG_COLOR
+    );
+
+    elements.preview.style.backgroundColor = bgColor;
+    elements.preview.style.color = textColor;
+
+    elements.textSwatch.style.backgroundColor = textColor;
+    elements.bgSwatch.style.backgroundColor = bgColor;
+
+    elements.previewName.textContent =
+        name || "Event Name";
+
+    if (isValidDate(date)) {
+        elements.previewDday.textContent = formatDday(date);
+        elements.previewDate.textContent = formatDate(date);
+    } else {
+        elements.previewDday.textContent = "D-20";
+        elements.previewDate.textContent = "YYYY.MM.DD";
     }
-
-    if (name.length > 100) {
-        showFormError(
-            "Event name must be 100 characters or less."
-        );
-
-        elements.nameInput.focus();
-        return null;
-    }
-
-    if (!isValidDate(date)) {
-        showFormError("Please select a valid date.");
-        elements.dateInput.focus();
-        return null;
-    }
-
-    if (note.length > 300) {
-        showFormError(
-            "Memo must be 300 characters or less."
-        );
-
-        elements.noteInput.focus();
-        return null;
-    }
-
-    clearFormError();
-
-    return {
-        name,
-        date,
-        note
-    };
 }
 
-/**
- * Add or update an event.
- */
-function handleFormSubmit(event) {
+/* ========================================
+   8. Save Event
+======================================== */
+
+function saveEvent(event) {
     event.preventDefault();
 
-    const data = validateForm();
+    const name = elements.name.value.trim();
+    const date = elements.date.value;
+    const note = elements.note.value.trim();
 
-    if (!data) {
+    const textColorInput = elements.textColor.value.trim();
+    const bgColorInput = elements.bgColor.value.trim();
+
+    if (!name) {
+        elements.error.textContent =
+            "Please enter an event name.";
         return;
     }
 
-    const now = Date.now();
+    if (!isValidDate(date)) {
+        elements.error.textContent =
+            "Please select a valid date.";
+        return;
+    }
+
+    if (!isValidColor(textColorInput)) {
+        elements.error.textContent =
+            "Text Color must be a 6-digit HEX code.";
+        return;
+    }
+
+    if (!isValidColor(bgColorInput)) {
+        elements.error.textContent =
+            "Background Color must be a 6-digit HEX code.";
+        return;
+    }
+
+    const textColor = textColorInput.toUpperCase();
+    const bgColor = bgColorInput.toUpperCase();
+
+    const previousState = JSON.stringify(state);
 
     if (editingId) {
         const existing = state.events.find(
             item => item.id === editingId
         );
 
-        if (!existing) {
-            showFormError(
-                "This event no longer exists."
-            );
-            return;
-        }
+        if (!existing) return;
 
-        existing.name = data.name;
-        existing.date = data.date;
-        existing.note = data.note;
-        existing.updatedAt = now;
-
-        announce("Event updated.");
+        existing.name = name;
+        existing.date = date;
+        existing.note = note;
+        existing.textColor = textColor;
+        existing.bgColor = bgColor;
 
     } else {
         const maxOrder = state.events.reduce(
@@ -657,500 +522,127 @@ function handleFormSubmit(event) {
             -1
         );
 
-        const newEvent = {
+        state.events.push({
             id: createId(),
-            name: data.name,
-            date: data.date,
-            note: data.note,
-            createdAt: now,
-            updatedAt: null,
+            name,
+            date,
+            note,
+            textColor,
+            bgColor,
             order: maxOrder + 1
-        };
-
-        state.events.push(newEvent);
-
-        announce("Event added.");
+        });
     }
 
-    ensureSelection();
-    saveState();
+    if (!saveState()) {
+        state = JSON.parse(previousState);
+        elements.error.textContent =
+            "Could not save. Please check browser storage.";
+        return;
+    }
 
     closeEditor();
-    render();
+    renderEvents();
 }
 
-
-/* =========================================
+/* ========================================
    9. Delete Event
-========================================= */
+======================================== */
 
-/**
- * Delete immediately without alert/confirm.
- *
- * If the selected event is removed,
- * ensureSelection() chooses the next
- * closest event automatically.
- */
-function deleteEvent(id) {
-    const index = state.events.findIndex(
-        event => event.id === id
-    );
+function deleteEvent() {
+    if (!editingId) return;
 
-    if (index === -1) {
+    // 첫 클릭: 삭제 확인
+    if (!deletePending) {
+        deletePending = true;
+        elements.deleteBtn.textContent = "Confirm Delete";
+
+        elements.error.textContent =
+            "Click Confirm Delete to remove this event.";
+
         return;
     }
 
-    const deletedName = state.events[index].name;
+    // 두 번째 클릭: 실제 삭제
+    const previousState = JSON.stringify(state);
 
-    state.events.splice(index, 1);
+    state.events = state.events.filter(
+        event => event.id !== editingId
+    );
 
-    if (state.selectedId === id) {
-        state.selectedId = null;
+    if (!saveState()) {
+        state = JSON.parse(previousState);
+        elements.error.textContent =
+            "Could not delete. Please try again.";
+        resetDeleteButton();
+        return;
     }
 
-    // Close editor if the edited event is deleted.
-    if (editingId === id) {
+    closeEditor();
+    renderEvents();
+}
+
+/* ========================================
+   10. Event Listeners
+======================================== */
+
+elements.addBtn.addEventListener("click", () => {
+    openEditor();
+});
+
+elements.closeBtn.addEventListener("click", closeEditor);
+elements.cancelBtn.addEventListener("click", closeEditor);
+
+elements.form.addEventListener("submit", saveEvent);
+
+elements.deleteBtn.addEventListener("click", deleteEvent);
+
+elements.togglePastBtn.addEventListener("click", () => {
+    const previousValue = state.showPast;
+
+    state.showPast = !state.showPast;
+
+    if (!saveState()) {
+        state.showPast = previousValue;
+    }
+
+    renderEvents();
+});
+
+[
+    elements.name,
+    elements.date,
+    elements.textColor,
+    elements.bgColor
+].forEach(input => {
+    input.addEventListener("input", updatePreview);
+    input.addEventListener("change", updatePreview);
+});
+
+// 다른 탭에서 데이터가 변경되었을 때 동기화
+window.addEventListener("storage", (event) => {
+    if (event.key === STORAGE_KEY) {
+        state = loadState();
         closeEditor();
+        renderEvents();
     }
+});
 
-    ensureSelection();
+// 날짜가 바뀌면 D-Day 자동 갱신
+let lastToday = getTodayString();
 
-    saveState();
-    render();
+setInterval(() => {
+    const currentToday = getTodayString();
 
-    announce(`${deletedName} deleted.`);
-}
+    if (currentToday !== lastToday) {
+        lastToday = currentToday;
 
+        renderEvents();
 
-/* =========================================
-   10. DOM Utilities
-========================================= */
-
-/**
- * Create an element with safe text content.
- *
- * User-entered names and memos are never
- * inserted using innerHTML.
- */
-function createElement(
-    tag,
-    className = "",
-    text = null
-) {
-    const element = document.createElement(tag);
-
-    if (className) {
-        element.className = className;
-    }
-
-    if (text !== null) {
-        element.textContent = text;
-    }
-
-    return element;
-}
-
-/**
- * Create a Lucide icon element.
- */
-function createIcon(name, className = "") {
-    const icon = document.createElement("i");
-
-    icon.setAttribute("data-lucide", name);
-
-    if (className) {
-        icon.className = className;
-    }
-
-    return icon;
-}
-
-/**
- * Refresh Lucide icons if available.
- */
-function refreshIcons() {
-    if (
-        window.lucide &&
-        typeof window.lucide.createIcons === "function"
-    ) {
-        window.lucide.createIcons();
-    }
-}
-
-/**
- * Accessibility status message.
- */
-function announce(message) {
-    elements.liveStatus.textContent = "";
-
-    requestAnimationFrame(() => {
-        elements.liveStatus.textContent = message;
-    });
-}
-
-
-/* =========================================
-   11. Render Main D-Day Card
-========================================= */
-
-function renderMainCard() {
-    const event = getSelectedEvent();
-
-    if (!event) {
-        elements.mainEmpty.classList.remove("hidden");
-        elements.mainContent.classList.add("hidden");
-        return;
-    }
-
-    elements.mainEmpty.classList.add("hidden");
-    elements.mainContent.classList.remove("hidden");
-
-    elements.mainName.textContent = event.name;
-
-    elements.mainDday.textContent =
-        getDdayLabel(event.date);
-
-    elements.mainDate.textContent =
-        formatMainDate(event.date);
-
-    if (event.note) {
-        elements.mainNote.textContent = event.note;
-        elements.mainNote.classList.remove("hidden");
-    } else {
-        elements.mainNote.textContent = "";
-        elements.mainNote.classList.add("hidden");
-    }
-}
-
-
-/* =========================================
-   12. Render Event Row
-========================================= */
-
-function createEventRow(event) {
-    const selected = event.id === state.selectedId;
-    const past = event.date < getLocalToday();
-
-    const row = createElement("div", "event-row");
-
-    if (selected) {
-        row.classList.add("selected");
-    }
-
-    if (past) {
-        row.classList.add("past");
-    }
-
-    // Main clickable area
-    const selectButton = createElement(
-        "button",
-        "event-select"
-    );
-
-    selectButton.type = "button";
-
-    selectButton.setAttribute(
-        "aria-label",
-        `Select ${event.name}, ${getDdayLabel(event.date)}`
-    );
-
-    selectButton.setAttribute(
-        "aria-pressed",
-        String(selected)
-    );
-
-    const info = createElement("div", "event-info");
-
-    const nameLine = createElement(
-        "div",
-        "event-name-line"
-    );
-
-    const name = createElement(
-        "span",
-        "event-name",
-        event.name
-    );
-
-    nameLine.appendChild(name);
-
-    if (selected) {
-        nameLine.appendChild(
-            createIcon("check", "selected-icon")
-        );
-    }
-
-    const date = createElement(
-        "span",
-        "event-date",
-        formatListDate(event.date)
-    );
-
-    info.append(nameLine, date);
-
-    const dday = createElement(
-        "span",
-        "event-dday",
-        getDdayLabel(event.date)
-    );
-
-    selectButton.append(info, dday);
-
-    selectButton.addEventListener("click", () => {
-        selectEvent(event.id);
-    });
-
-    // Edit / Delete actions
-    const actions = createElement(
-        "div",
-        "event-actions"
-    );
-
-    const editButton = createElement(
-        "button",
-        "event-action"
-    );
-
-    editButton.type = "button";
-    editButton.title = "Edit event";
-
-    editButton.setAttribute(
-        "aria-label",
-        `Edit ${event.name}`
-    );
-
-    editButton.appendChild(createIcon("pencil"));
-
-    editButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openEditor(event.id);
-    });
-
-    const deleteButton = createElement(
-        "button",
-        "event-action"
-    );
-
-    deleteButton.type = "button";
-    deleteButton.title = "Delete event";
-
-    deleteButton.setAttribute(
-        "aria-label",
-        `Delete ${event.name}`
-    );
-
-    deleteButton.appendChild(createIcon("trash-2"));
-
-    deleteButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        deleteEvent(event.id);
-    });
-
-    actions.append(editButton, deleteButton);
-
-    row.append(selectButton, actions);
-
-    return row;
-}
-
-
-/* =========================================
-   13. Render Upcoming Events
-========================================= */
-
-function renderEventList() {
-    const sorted = sortEvents(state.events);
-    const today = getLocalToday();
-
-    const visibleEvents = sorted.filter(event => {
-        if (state.showPast) {
-            return true;
-        }
-
-        // Keep the selected event visible even
-        // when it is in the past.
-        return (
-            event.date >= today ||
-            event.id === state.selectedId
-        );
-    });
-
-    elements.eventsList.replaceChildren();
-
-    const fragment = document.createDocumentFragment();
-
-    for (const event of visibleEvents) {
-        fragment.appendChild(createEventRow(event));
-    }
-
-    elements.eventsList.appendChild(fragment);
-
-    elements.listEmpty.classList.toggle(
-        "hidden",
-        visibleEvents.length > 0
-    );
-
-    elements.eventCount.textContent =
-        `${state.events.length} ` +
-        (state.events.length === 1 ? "EVENT" : "EVENTS");
-
-    const pastCount = state.events.filter(
-        event => event.date < today
-    ).length;
-
-    elements.togglePast.classList.toggle(
-        "hidden",
-        pastCount === 0
-    );
-
-    elements.togglePast.textContent =
-        state.showPast ? "Hide Past" : "Show Past";
-
-    elements.togglePast.setAttribute(
-        "aria-pressed",
-        String(state.showPast)
-    );
-}
-
-
-/* =========================================
-   14. Main Render Function
-========================================= */
-
-function render() {
-    const selectionChanged = ensureSelection();
-
-    if (selectionChanged) {
-        saveState();
-    }
-
-    renderMainCard();
-    renderEventList();
-
-    refreshIcons();
-}
-
-
-/* =========================================
-   15. Event Listeners
-========================================= */
-
-// Add Event
-elements.addButton.addEventListener(
-    "click",
-    () => openEditor()
-);
-
-// Close Editor
-elements.closeEditor.addEventListener(
-    "click",
-    closeEditor
-);
-
-// Cancel Editor
-elements.cancelEditor.addEventListener(
-    "click",
-    closeEditor
-);
-
-// Save Event
-elements.form.addEventListener(
-    "submit",
-    handleFormSubmit
-);
-
-// Clear validation message when typing.
-elements.nameInput.addEventListener(
-    "input",
-    clearFormError
-);
-
-elements.dateInput.addEventListener(
-    "input",
-    clearFormError
-);
-
-elements.noteInput.addEventListener(
-    "input",
-    clearFormError
-);
-
-// Show / Hide Past Events
-elements.togglePast.addEventListener(
-    "click",
-    () => {
-        state.showPast = !state.showPast;
-
-        saveState();
-        render();
-    }
-);
-
-// Escape closes the inline editor.
-document.addEventListener(
-    "keydown",
-    (event) => {
-        if (
-            event.key === "Escape" &&
-            !elements.editor.classList.contains("hidden")
-        ) {
-            closeEditor();
+        if (!elements.editor.hidden) {
+            updatePreview();
         }
     }
-);
+}, 60 * 1000);
 
-
-/* =========================================
-   16. Automatic Date Refresh
-========================================= */
-
-/**
- * Check whether the local calendar day changed.
- * This is not used to calculate elapsed seconds.
- */
-function checkDateChange() {
-    const today = getLocalToday();
-
-    if (today !== lastKnownDate) {
-        lastKnownDate = today;
-
-        render();
-    }
-}
-
-// Check every 30 seconds.
-setInterval(checkDateChange, 30000);
-
-// Recheck when returning to the browser tab.
-document.addEventListener(
-    "visibilitychange",
-    () => {
-        if (!document.hidden) {
-            checkDateChange();
-        }
-    }
-);
-
-// Recheck when the window receives focus.
-window.addEventListener(
-    "focus",
-    checkDateChange
-);
-
-// Sync changes from other tabs sharing storage.
-window.addEventListener(
-    "storage",
-    (event) => {
-        if (event.key === STORAGE_KEY) {
-            state = loadState();
-            render();
-        }
-    }
-);
-
-
-/* =========================================
-   17. Initialize
-========================================= */
-
-render();
+// 초기 화면
+renderEvents();
