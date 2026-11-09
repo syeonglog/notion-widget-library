@@ -656,6 +656,61 @@ function renderGoal() {
    Bookshelf
 ========================================== */
 
+/* ==========================================
+   Bookshelf Drag Scroll
+========================================== */
+
+const bookshelfScroller = $("bookshelf");
+
+let dragStartX = 0;
+let dragStartScrollLeft = 0;
+let isDraggingBookshelf = false;
+let hasDraggedBookshelf = false;
+
+// 마우스 드래그 시작
+bookshelfScroller.addEventListener("pointerdown", event => {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+
+    dragStartX = event.clientX;
+    dragStartScrollLeft = bookshelfScroller.scrollLeft;
+
+    isDraggingBookshelf = true;
+    hasDraggedBookshelf = false;
+});
+
+// 마우스를 움직이면 가로 스크롤
+window.addEventListener("pointermove", event => {
+    if (!isDraggingBookshelf) return;
+
+    const distance = event.clientX - dragStartX;
+
+    if (Math.abs(distance) > 5) {
+        hasDraggedBookshelf = true;
+        bookshelfScroller.classList.add("dragging");
+    }
+
+    if (hasDraggedBookshelf) {
+        bookshelfScroller.scrollLeft =
+            dragStartScrollLeft - distance;
+    }
+});
+
+// 마우스 드래그 종료
+window.addEventListener("pointerup", () => {
+    isDraggingBookshelf = false;
+    bookshelfScroller.classList.remove("dragging");
+});
+
+// 드래그 후 책이 실수로 선택되지 않도록 방지
+bookshelfScroller.addEventListener("click", event => {
+    if (!hasDraggedBookshelf) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    hasDraggedBookshelf = false;
+}, true);
+
 function renderBookshelf() {
     const container = $("bookshelf");
 
