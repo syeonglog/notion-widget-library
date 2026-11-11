@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Study Hours</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main class="widget">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>Study hours</h1>
+
+            <div class="week-nav">
+                <button id="prevWeek" aria-label="Previous week">‹</button>
+                <button id="nextWeek" aria-label="Next week">›</button>
+            </div>
+        </header>
+
+        <!-- Summary -->
+        <section class="summary">
+            <p class="total-time" id="totalTime">0h 0m</p>
+            <p class="summary-label" id="weekLabel">THIS WEEK</p>
+        </section>
+
+        <!-- Weekly Chart -->
+        <section class="chart-section">
+            <div class="chart" id="weeklyChart"></div>
+        </section>
+
+        <!-- Study Time Input -->
+        <section class="input-section">
+
+            <div class="input-heading">
+                <span id="selectedDateLabel">Today</span>
+                <button id="resetDate" class="reset-btn" hidden>
+                    Today
+                </button>
+            </div>
+
+            <div class="input-row">
+                <label class="time-field">
+                    <input
+                        type="number"
+                        id="hoursInput"
+                        min="0"
+                        max="999"
+                        value="0"
+                        aria-label="Hours"
+                    >
+                    <span>h</span>
+                </label>
+
+                <label class="time-field">
+                    <input
+                        type="number"
+                        id="minutesInput"
+                        min="0"
+                        max="59"
+                        value="0"
+                        aria-label="Minutes"
+                    >
+                    <span>m</span>
+                </label>
+
+                <button id="saveBtn" class="save-btn">
+                    Save
+                </button>
+            </div>
+
+            <button id="deleteBtn" class="delete-btn" hidden>
+                Delete record
+            </button>
+
+        </section>
+
+    </main>
+</body>
+</html>
