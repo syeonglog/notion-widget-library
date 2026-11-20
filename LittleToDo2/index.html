@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Weekly To-Do Planner</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <main class="widget" id="widget">
+
+    <!-- 주간 날짜 탐색 -->
+    <header class="week-header">
+      <div class="week-navigation">
+        <button
+          type="button"
+          class="icon-button"
+          id="prevWeek"
+          aria-label="이전 주"
+        >
+          ‹
+        </button>
+
+        <h1 id="weekLabel" aria-live="polite"></h1>
+
+        <button
+          type="button"
+          class="icon-button"
+          id="nextWeek"
+          aria-label="다음 주"
+        >
+          ›
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="someday-toggle"
+        id="somedayToggle"
+        aria-expanded="false"
+        aria-controls="somedayPanel"
+      >
+        Someday
+      </button>
+    </header>
+
+    <!-- 요일별 카드 -->
+    <section
+      class="planner"
+      aria-label="주간 할 일"
+    >
+      <div
+        class="days-viewport"
+        id="daysViewport"
+        tabindex="0"
+        aria-label="요일별 할 일 가로 스크롤"
+      >
+        <div
+          class="days-track"
+          id="daysTrack"
+        ></div>
+      </div>
+
+      <!-- 실제 가로 스크롤과 연결된 커스텀 스크롤바 -->
+      <div
+        class="custom-scrollbar"
+        id="customScrollbar"
+      >
+        <div
+          class="scroll-track"
+          id="scrollTrack"
+          role="scrollbar"
+          tabindex="0"
+          aria-label="요일 카드 가로 스크롤"
+          aria-orientation="horizontal"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+          aria-controls="daysViewport"
+        >
+          <div
+            class="scroll-thumb"
+            id="scrollThumb"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Someday 보관함 -->
+    <section
+      class="someday-panel"
+      id="somedayPanel"
+      aria-label="Someday 보관함"
+      hidden
+    >
+      <div class="panel-header">
+        <span>Someday</span>
+
+        <button
+          type="button"
+          class="close-button"
+          id="closeSomeday"
+          aria-label="Someday 닫기"
+        >
+          ×
+        </button>
+      </div>
+
+      <div
+        class="someday-list"
+        id="somedayList"
+      ></div>
+
+      <button
+        type="button"
+        class="someday-add"
+        id="addSomeday"
+        aria-label="Someday 할 일 추가"
+      >
+        +
+      </button>
+    </section>
+
+    <!-- 할 일 등록 및 수정 모달 -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      hidden
+    >
+      <section
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+
+        <!-- 모달 상단 -->
+        <div class="modal-header">
+          <h2 id="modalTitle">New Task</h2>
+
+          <button
+            type="button"
+            class="close-button"
+            id="closeModal"
+            aria-label="창 닫기"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- 할 일 입력 폼 -->
+        <form
+          id="taskForm"
+          novalidate
+        >
+          <div class="form-fields">
+
+            <!-- 할 일 제목 -->
+            <div class="form-field">
+              <label for="taskTitle">
+                Task
+              </label>
+
+              <input
+                type="text"
+                id="taskTitle"
+                name="taskTitle"
+                maxlength="120"
+                autocomplete="off"
+                placeholder="What needs to be done?"
+                required
+              >
+            </div>
+
+            <!-- 날짜 설정 -->
+            <div class="form-field">
+              <label for="taskDateMode">
+                Date
+              </label>
+
+              <select
+                id="taskDateMode"
+                name="taskDateMode"
+              >
+                <option value="today">
+                  Today
+                </option>
+
+                <option value="tomorrow">
+                  Tomorrow
+                </option>
+
+                <option value="custom">
+                  Choose Date
+                </option>
+
+                <option value="someday">
+                  Someday
+                </option>
+              </select>
+
+              <input
+                type="date"
+                id="taskCustomDate"
+                name="taskCustomDate"
+                aria-label="직접 날짜 선택"
+              >
+            </div>
+
+            <!-- 중요도 설정 -->
+            <div class="form-field">
+              <label for="taskPriority">
+                Priority
+              </label>
+
+              <select
+                id="taskPriority"
+                name="taskPriority"
+              >
+                <option value="high">
+                  High
+                </option>
+
+                <option value="medium" selected>
+                  Medium
+                </option>
+
+                <option value="low">
+                  Low
+                </option>
+              </select>
+            </div>
+
+            <!-- 반복 설정 -->
+            <div class="form-field">
+              <label for="taskRepeat">
+                Repeat
+              </label>
+
+              <select
+                id="taskRepeat"
+                name="taskRepeat"
+              >
+                <option value="none">
+                  None
+                </option>
+
+                <option value="daily">
+                  Daily
+                </option>
+
+                <option value="weekdays">
+                  Weekdays
+                </option>
+
+                <option value="weekends">
+                  Weekends
+                </option>
+
+                <option value="weekly">
+                  Weekly
+                </option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- 입력 오류 -->
+          <p
+            class="form-error"
+            id="formError"
+            role="alert"
+            hidden
+          ></p>
+
+          <!-- 폼 버튼 -->
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="delete-button"
+              id="deleteTaskButton"
+              hidden
+            >
+              Delete
+            </button>
+
+            <div class="action-right">
+              <button
+                type="button"
+                class="secondary-button"
+                id="cancelTask"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                class="primary-button"
+              >
+                Save
+              </button>
+            </div>
+
+          </div>
+        </form>
+
+        <!-- 삭제 확인 화면 -->
+        <div
+          class="delete-confirm"
+          id="deleteConfirm"
+          hidden
+        >
+          <p class="delete-message">
+            Delete this task?
+          </p>
+
+          <div
+            class="delete-options"
+            id="deleteOptions"
+          ></div>
+
+          <button
+            type="button"
+            class="secondary-button back-button"
+            id="backToEdit"
+          >
+            Back
+          </button>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- 토스트 메시지 -->
+    <div
+      class="toast"
+      id="toast"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+  </main>
+</body>
+</html>

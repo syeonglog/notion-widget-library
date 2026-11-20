@@ -1,0 +1,1116 @@
+
+/* ========================================
+   1. COLOR & SIZE VARIABLES
+======================================== */
+
+:root {
+  /* Background */
+  --bg-main: #FFFFFF;
+  --bg-card: #FAF9F8;
+  --bg-soft: #FCF7F5;
+  --bg-button: #F2EAE7;
+
+  /* Scrollbar */
+  --scroll-track: #F2EBE8;
+  --scroll-thumb: #CDB8B1;
+  --scroll-thumb-hover: #BFA59C;
+
+  /* Text */
+  --text-main: #705C53;
+  --text-sub: #A8958E;
+  --text-light: #B9AAA3;
+
+  /* Border */
+  --border-main: #EEE9E6;
+  --border-selected: #DCC9C2;
+
+  /* Priority */
+  --priority-high: #C58F89;
+  --priority-medium: #C8B49E;
+  --priority-low: #D7D3CF;
+
+  /* Checkbox */
+  --check-bg: #CDB8B1;
+  --check-border: #CDB8B1;
+
+  /* Overlay */
+  --overlay-bg: rgba(112, 92, 83, 0.16);
+
+  /* Sizes */
+  --widget-height: 385px;
+  --card-width: 180px;
+  --card-height: 285px;
+  --card-gap: 12px;
+
+  --scroll-height: 7px;
+
+  /* Radius */
+  --radius-widget: 15px;
+  --radius-card: 12px;
+  --radius-small: 8px;
+}
+
+
+/* ========================================
+   2. GLOBAL
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+}
+
+body {
+  font-family:
+    "Apple SD Gothic Neo",
+    "Malgun Gothic",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  color: var(--text-main);
+  background: transparent;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--border-selected);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ========================================
+   3. MAIN WIDGET
+======================================== */
+
+.widget {
+  position: relative;
+
+  width: 100%;
+  height: var(--widget-height);
+  max-width: 100%;
+
+  padding: 14px 13px 12px;
+
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-widget);
+
+  background: var(--bg-main);
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+
+/* ========================================
+   4. WEEK HEADER
+======================================== */
+
+.week-header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 39px;
+  padding-bottom: 13px;
+  margin-bottom: 13px;
+
+  border-bottom: 1px solid var(--border-main);
+}
+
+.week-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 13px;
+  min-width: 0;
+}
+
+#weekLabel {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 25px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+  color: var(--text-sub);
+
+  font-family: Arial, sans-serif;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.icon-button:hover {
+  color: var(--text-main);
+  background: var(--bg-soft);
+}
+
+.someday-toggle {
+  position: absolute;
+
+  right: 0;
+  top: 1px;
+
+  padding: 6px 9px;
+
+  border: 1px solid var(--border-main);
+  border-radius: 8px;
+
+  background: var(--bg-soft);
+
+  color: var(--text-sub);
+  font-size: 10px;
+  font-weight: 400;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.someday-toggle:hover,
+.someday-toggle.active {
+  background: var(--bg-button);
+  border-color: var(--border-selected);
+}
+
+
+/* ========================================
+   5. PLANNER
+======================================== */
+
+.planner {
+  width: 100%;
+  min-width: 0;
+}
+
+.days-viewport {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: none;
+
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+.days-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.days-track {
+  display: flex;
+  align-items: stretch;
+
+  gap: var(--card-gap);
+  width: max-content;
+
+  padding-bottom: 2px;
+}
+
+
+/* ========================================
+   6. DAY CARDS
+======================================== */
+
+.day-card {
+  display: flex;
+  flex-direction: column;
+
+  flex: 0 0 var(--card-width);
+
+  width: var(--card-width);
+  height: var(--card-height);
+
+  padding: 12px 10px 10px;
+
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-card);
+
+  background: var(--bg-card);
+
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.day-card.selected {
+  border-color: var(--border-selected);
+}
+
+.day-card.today {
+  background: var(--bg-soft);
+}
+
+.day-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+
+  width: 100%;
+  min-height: 24px;
+
+  margin-bottom: 12px;
+  padding: 0 2px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+
+  text-align: left;
+}
+
+.day-name {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+
+  color: var(--text-sub);
+}
+
+.day-number {
+  font-size: 15px;
+  font-weight: 500;
+
+  color: var(--text-main);
+}
+
+.day-card.today .day-number {
+  color: var(--priority-high);
+}
+
+
+/* ========================================
+   7. TASK LIST
+======================================== */
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-height: 0;
+
+  gap: 6px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 2px 3px 3px 0;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--scroll-thumb)
+    transparent;
+}
+
+.task-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 7px;
+
+  min-width: 0;
+  padding: 5px 3px;
+
+  border-radius: 6px;
+
+  transition: background 0.15s;
+}
+
+.task-item:hover {
+  background: var(--bg-button);
+}
+
+/* Native checkbox appearance */
+.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+
+  position: relative;
+
+  flex: 0 0 14px;
+
+  width: 14px;
+  height: 14px;
+
+  margin: 2px 0 0;
+
+  border: 1px solid var(--check-border);
+  border-radius: 4px;
+
+  background: var(--bg-main);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.task-checkbox:checked {
+  background: var(--check-bg);
+  border-color: var(--check-bg);
+}
+
+.task-checkbox:checked::after {
+  content: "";
+
+  position: absolute;
+
+  left: 4px;
+  top: 1px;
+
+  width: 3px;
+  height: 7px;
+
+  border: solid #FFFFFF;
+  border-width: 0 1.5px 1.5px 0;
+
+  transform: rotate(45deg);
+}
+
+.task-title-button {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 5px;
+
+  flex: 1;
+  min-width: 0;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  text-align: left;
+}
+
+.task-text {
+  min-width: 0;
+
+  font-size: 11px;
+  line-height: 1.55;
+  font-weight: 400;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  color: var(--text-main);
+}
+
+.task-item.completed .task-text {
+  color: var(--text-light);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-light);
+}
+
+.priority-dot {
+  display: inline-block;
+
+  flex: 0 0 5px;
+
+  width: 5px;
+  height: 5px;
+
+  margin-top: 6px;
+
+  border-radius: 50%;
+}
+
+.priority-high {
+  background: var(--priority-high);
+}
+
+.priority-medium {
+  background: var(--priority-medium);
+}
+
+.priority-low {
+  background: var(--priority-low);
+}
+
+/* Only high priority gets a dot */
+.priority-dot:not(.priority-high) {
+  display: none;
+}
+
+
+/* ========================================
+   8. ADD BUTTON
+======================================== */
+
+.add-task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 100%;
+  height: 28px;
+
+  margin-top: 7px;
+
+  border: 1px dashed var(--border-main);
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--text-sub);
+
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.add-task:hover {
+  background: var(--bg-button);
+  border-color: var(--border-selected);
+}
+
+
+/* ========================================
+   9. CUSTOM HORIZONTAL SCROLLBAR
+======================================== */
+
+.custom-scrollbar {
+  width: 100%;
+
+  padding: 15px 2px 4px;
+
+  user-select: none;
+  touch-action: none;
+}
+
+.scroll-track {
+  position: relative;
+
+  width: 100%;
+  height: var(--scroll-height);
+
+  border-radius: 100px;
+
+  background: var(--scroll-track);
+
+  cursor: pointer;
+  touch-action: none;
+}
+
+.scroll-thumb {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 30%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: var(--scroll-thumb);
+
+  cursor: grab;
+  touch-action: none;
+
+  transition: background 0.15s;
+}
+
+.scroll-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+.scroll-thumb.dragging {
+  cursor: grabbing;
+  background: var(--scroll-thumb-hover);
+}
+
+.custom-scrollbar.is-hidden {
+  display: none;
+}
+
+
+/* ========================================
+   10. SOMEDAY PANEL
+======================================== */
+
+.someday-panel {
+  position: absolute;
+  z-index: 20;
+
+  top: 58px;
+  right: 12px;
+  bottom: 12px;
+
+  display: flex;
+  flex-direction: column;
+
+  width: min(265px, calc(100% - 24px));
+
+  padding: 13px;
+
+  border: 1px solid var(--border-main);
+  border-radius: 12px;
+
+  background: var(--bg-main);
+
+  box-shadow: 0 4px 15px rgba(80, 60, 50, 0.07);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  margin-bottom: 9px;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 25px;
+  height: 25px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: var(--text-sub);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.close-button:hover {
+  background: var(--bg-button);
+}
+
+.someday-list {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--scroll-thumb)
+    transparent;
+}
+
+.someday-add {
+  flex-shrink: 0;
+
+  width: 100%;
+  height: 30px;
+
+  margin-top: 8px;
+
+  border: 1px dashed var(--border-main);
+  border-radius: 8px;
+
+  background: var(--bg-soft);
+
+  color: var(--text-sub);
+  font-size: 20px;
+}
+
+.someday-add:hover {
+  background: var(--bg-button);
+}
+
+
+/* ========================================
+   11. MODAL OVERLAY
+======================================== */
+
+.modal-overlay {
+  position: absolute;
+  z-index: 50;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background: var(--overlay-bg);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+
+  width: min(355px, 100%);
+  max-height: 100%;
+
+  padding: 16px;
+
+  border: 1px solid var(--border-main);
+  border-radius: 13px;
+
+  background: var(--bg-main);
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    var(--scroll-thumb)
+    transparent;
+
+  box-shadow: 0 5px 18px rgba(80, 60, 50, 0.08);
+
+  animation: modalAppear 0.18s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 13px;
+}
+
+.modal-header h2 {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+/* ========================================
+   12. FORM
+======================================== */
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+
+  gap: 11px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.form-field label {
+  color: var(--text-sub);
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  min-height: 33px;
+
+  padding: 7px 9px;
+
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-small);
+
+  outline: none;
+
+  background: var(--bg-card);
+  color: var(--text-main);
+
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: var(--border-selected);
+}
+
+.form-field input::placeholder {
+  color: var(--text-light);
+}
+
+.form-field select:disabled {
+  opacity: 0.55;
+}
+
+#taskCustomDate {
+  margin-top: 3px;
+}
+
+.form-error {
+  margin: 8px 0 0;
+
+  color: var(--priority-high);
+  font-size: 10px;
+}
+
+
+/* ========================================
+   13. FORM ACTIONS
+======================================== */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 9px;
+
+  margin-top: 16px;
+}
+
+.action-right {
+  display: flex;
+  justify-content: flex-end;
+
+  flex: 1;
+
+  gap: 7px;
+}
+
+.primary-button,
+.secondary-button,
+.delete-button {
+  min-height: 31px;
+
+  padding: 7px 13px;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+  font-weight: 400;
+
+  transition: background 0.2s;
+}
+
+.primary-button {
+  border: 1px solid var(--border-selected);
+
+  background: var(--bg-button);
+  color: var(--text-main);
+}
+
+.primary-button:hover {
+  background: var(--border-selected);
+}
+
+.secondary-button {
+  border: 1px solid var(--border-main);
+
+  background: var(--bg-main);
+  color: var(--text-sub);
+}
+
+.secondary-button:hover {
+  background: var(--bg-card);
+}
+
+.delete-button {
+  border: none;
+
+  background: transparent;
+  color: var(--priority-high);
+
+  padding-left: 0;
+  padding-right: 5px;
+}
+
+.delete-button:hover {
+  text-decoration: underline;
+}
+
+
+/* ========================================
+   14. DELETE CONFIRMATION
+======================================== */
+
+.delete-confirm {
+  padding: 3px 0;
+}
+
+.delete-message {
+  margin: 0 0 12px;
+
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.delete-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.delete-option {
+  width: 100%;
+  min-height: 34px;
+
+  padding: 8px 11px;
+
+  border: 1px solid var(--border-main);
+  border-radius: 8px;
+
+  background: var(--bg-soft);
+
+  text-align: left;
+
+  font-size: 11px;
+}
+
+.delete-option:hover {
+  background: var(--bg-button);
+}
+
+.delete-option.danger {
+  color: var(--priority-high);
+}
+
+.back-button {
+  margin-top: 12px;
+  width: 100%;
+}
+
+
+/* ========================================
+   15. TOAST
+======================================== */
+
+.toast {
+  position: absolute;
+  z-index: 100;
+
+  left: 50%;
+  bottom: 15px;
+
+  max-width: calc(100% - 30px);
+
+  padding: 8px 13px;
+
+  border: 1px solid var(--border-main);
+  border-radius: 8px;
+
+  background: var(--bg-main);
+  color: var(--text-main);
+
+  font-size: 11px;
+  text-align: center;
+
+  box-shadow: 0 3px 12px rgba(80, 60, 50, 0.07);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform: translate(-50%, 8px);
+
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+
+/* ========================================
+   16. RESPONSIVE
+======================================== */
+
+@media (max-width: 600px) {
+  :root {
+    --card-width: 165px;
+    --card-gap: 9px;
+  }
+
+  .widget {
+    padding: 12px 10px 10px;
+  }
+
+  .week-header {
+    padding-bottom: 12px;
+  }
+
+  #weekLabel {
+    font-size: 12px;
+  }
+
+  .week-navigation {
+    gap: 7px;
+  }
+
+  .someday-toggle {
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+
+  .day-card {
+    padding: 10px 8px 9px;
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    --card-width: 145px;
+    --card-gap: 8px;
+  }
+
+  #weekLabel {
+    font-size: 11px;
+  }
+
+  .week-navigation {
+    gap: 3px;
+  }
+
+  .icon-button {
+    width: 19px;
+    font-size: 20px;
+  }
+
+  .someday-toggle {
+    right: 0;
+    font-size: 9px;
+  }
+
+  .task-text {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 330px) {
+  .week-header {
+    justify-content: flex-start;
+  }
+
+  .week-navigation {
+    padding-right: 65px;
+  }
+
+  #weekLabel {
+    font-size: 10px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
