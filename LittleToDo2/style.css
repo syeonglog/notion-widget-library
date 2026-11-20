@@ -78,7 +78,7 @@ body {
     Arial,
     sans-serif;
 
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
 
@@ -171,7 +171,7 @@ select:focus-visible,
 #weekLabel {
   margin: 0;
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.1px;
 
@@ -224,7 +224,7 @@ select:focus-visible,
   background: var(--bg-soft);
 
   color: var(--text-sub);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
 
   transition:
@@ -330,7 +330,7 @@ select:focus-visible,
 }
 
 .day-name {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.6px;
 
@@ -338,7 +338,7 @@ select:focus-visible,
 }
 
 .day-number {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
 
   color: var(--text-main);
@@ -472,7 +472,7 @@ select:focus-visible,
 .task-text {
   min-width: 0;
 
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.55;
   font-weight: 400;
 
@@ -653,7 +653,7 @@ select:focus-visible,
 
   margin-bottom: 9px;
 
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -783,7 +783,7 @@ select:focus-visible,
 .modal-header h2 {
   margin: 0;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -809,7 +809,7 @@ select:focus-visible,
 .form-field label {
   color: var(--text-sub);
 
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -828,7 +828,7 @@ select:focus-visible,
   background: var(--bg-card);
   color: var(--text-main);
 
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
 }
 
@@ -853,7 +853,7 @@ select:focus-visible,
   margin: 8px 0 0;
 
   color: var(--priority-high);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 
@@ -889,7 +889,7 @@ select:focus-visible,
 
   border-radius: 8px;
 
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
 
   transition: background 0.2s;
@@ -943,7 +943,7 @@ select:focus-visible,
 .delete-message {
   margin: 0 0 12px;
 
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
 }
 
@@ -967,7 +967,7 @@ select:focus-visible,
 
   text-align: left;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .delete-option:hover {
@@ -1005,7 +1005,7 @@ select:focus-visible,
   background: var(--bg-main);
   color: var(--text-main);
 
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
 
   box-shadow: 0 3px 12px rgba(80, 60, 50, 0.07);
@@ -1045,7 +1045,7 @@ select:focus-visible,
   }
 
   #weekLabel {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .week-navigation {
@@ -1054,7 +1054,7 @@ select:focus-visible,
 
   .someday-toggle {
     padding: 5px 7px;
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .day-card {
@@ -1069,7 +1069,7 @@ select:focus-visible,
   }
 
   #weekLabel {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .week-navigation {
@@ -1083,11 +1083,11 @@ select:focus-visible,
 
   .someday-toggle {
     right: 0;
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .task-text {
-    font-size: 10px;
+    font-size: 13px;
   }
 }
 
@@ -1101,7 +1101,7 @@ select:focus-visible,
   }
 
   #weekLabel {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
