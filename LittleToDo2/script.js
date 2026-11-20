@@ -1656,7 +1656,7 @@ function handleTaskSubmit(event) {
 
     navigateToTaskDate(date);
 
-    renderAll(false);
+    renderAll(true);
 
     if (saved) {
       showToast(
@@ -1693,7 +1693,7 @@ function handleTaskSubmit(event) {
 
   navigateToTaskDate(date);
 
-  renderAll(false);
+  renderAll(true);
 
   if (saved) {
     showToast(
