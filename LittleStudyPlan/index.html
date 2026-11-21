@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Little Study Plan</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="widget">
+
+    <!-- 주간 날짜 탐색 -->
+    <header class="week-header">
+      <div class="week-navigation">
+        <button id="prevWeek" class="arrow-btn"
+                aria-label="이전 주">‹</button>
+        <span id="weekLabel"></span>
+        <button id="nextWeek" class="arrow-btn"
+                aria-label="다음 주">›</button>
+      </div>
+      <button id="somedayToggle" class="someday-btn"
+              aria-expanded="false">Someday</button>
+    </header>
+
+    <!-- 날짜별 공부 계획 카드 -->
+    <section class="planner">
+      <div id="cardViewport" class="card-viewport"
+           tabindex="0" aria-label="주간 공부 계획">
+        <div id="cardTrack" class="card-track"></div>
+      </div>
+
+      <!-- 실제 가로 스크롤바 -->
+      <div id="scrollbar" class="scrollbar" role="scrollbar"
+           tabindex="0" aria-label="날짜 카드 가로 스크롤"
+           aria-orientation="horizontal"
+           aria-valuemin="0" aria-valuemax="100"
+           aria-valuenow="0">
+        <div id="scrollThumb" class="scroll-thumb"></div>
+      </div>
+    </section>
+
+    <!-- Someday 보관함 -->
+    <section id="somedayPanel" class="someday-panel" hidden>
+      <div class="panel-header">
+        <span>Someday</span>
+        <button id="closeSomeday" class="close-btn"
+                aria-label="보관함 닫기">×</button>
+      </div>
+      <div id="somedayList" class="someday-list"></div>
+      <button id="addSomeday" class="panel-add">
+        + Add Study Plan
+      </button>
+    </section>
+  </main>
+
+  <!-- 등록 및 수정 모달 -->
+  <div id="modalOverlay" class="overlay" hidden>
+    <section class="modal" role="dialog" aria-modal="true"
+             aria-labelledby="modalTitle">
+
+      <div class="modal-header">
+        <h2 id="modalTitle">New Study Plan</h2>
+        <button id="closeModal" class="close-btn"
+                aria-label="창 닫기">×</button>
+      </div>
+
+      <form id="studyForm" novalidate>
+        <label for="taskInput">Study Task</label>
+        <input id="taskInput" type="text" maxlength="120"
+               placeholder="What will you study?" required>
+
+        <label for="dateMode">Date</label>
+        <select id="dateMode">
+          <option value="today">Today</option>
+          <option value="tomorrow">Tomorrow</option>
+          <option value="choose">Choose Date</option>
+          <option value="someday">Someday</option>
+        </select>
+        <input id="dateInput" type="date"
+               aria-label="공부 계획 날짜">
+
+        <label for="subjectSelect">Subject</label>
+        <div class="subject-row">
+          <select id="subjectSelect"></select>
+          <button id="addSubjectToggle" type="button"
+                  class="square-btn" aria-label="과목 추가">+</button>
+          <button id="manageSubjectToggle" type="button"
+                  class="square-btn manage-btn"
+                  aria-label="과목 관리">⋯</button>
+        </div>
+
+        <!-- 과목 추가 -->
+        <div id="subjectAddPanel" class="sub-panel" hidden>
+          <div class="inline-row">
+            <input id="newSubjectInput" type="text"
+                   maxlength="30" placeholder="New subject"
+                   aria-label="새 과목 이름">
+            <button id="saveSubject" type="button"
+                    class="soft-btn">Add</button>
+          </div>
+        </div>
+
+        <!-- 과목 관리 -->
+        <div id="subjectManagePanel" class="sub-panel" hidden>
+          <div id="subjectManageList"></div>
+        </div>
+
+        <label for="repeatSelect">Repeat</label>
+        <select id="repeatSelect">
+          <option value="none">None</option>
+          <option value="daily">Daily</option>
+          <option value="weekdays">Weekdays</option>
+          <option value="weekends">Weekends</option>
+          <option value="weekly">Weekly</option>
+        </select>
+
+        <div id="formError" class="form-error"
+             aria-live="polite"></div>
+
+        <div class="modal-actions">
+          <button id="deleteTask" type="button"
+                  class="delete-btn" hidden>Delete</button>
+          <span class="action-spacer"></span>
+          <button id="cancelModal" type="button"
+                  class="text-btn">Cancel</button>
+          <button type="submit" class="primary-btn">Save</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- 위젯 내부 삭제 확인 -->
+  <div id="confirmOverlay" class="overlay confirm-overlay" hidden>
+    <section class="confirm-box" role="dialog" aria-modal="true"
+             aria-labelledby="confirmMessage">
+      <p id="confirmMessage"></p>
+      <div id="confirmActions" class="confirm-actions"></div>
+    </section>
+  </div>
+
+  <!-- 토스트 -->
+  <div id="toast" class="toast" role="status"
+       aria-live="polite"></div>
+</body>
+</html>
