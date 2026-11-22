@@ -8,13 +8,8 @@
 const STORAGE_KEY = "weeklyTodoPlanner_v1";
 
 const WEEKDAYS = [
-  "MON",
-  "TUE",
-  "WED",
-  "THU",
-  "FRI",
-  "SAT",
-  "SUN"
+  "SUN", "MON", "TUE", "WED",
+  "THU", "FRI", "SAT"
 ];
 
 const MONTHS = [
@@ -166,8 +161,8 @@ function addDays(value, amount) {
   return formatDate(date);
 }
 
-/* 월요일 시작 주 계산 */
-function getMonday(value) {
+/* 일요일 시작 주 계산 */
+function getSunday(value) {
   const date = parseDate(value);
 
   if (!date) {
@@ -176,20 +171,18 @@ function getMonday(value) {
 
   const day = date.getDay();
 
-  const offset = (day + 6) % 7;
-
   date.setDate(
-    date.getDate() - offset
+    date.getDate() - day
   );
 
   return formatDate(date);
 }
 
 /* 주간 날짜 7개 */
-function getWeekDates(monday) {
+function getWeekDates(sunday) {
   return Array.from(
     { length: 7 },
-    (_, index) => addDays(monday, index)
+    (_, index) => addDays(sunday, index)
   );
 }
 
@@ -464,7 +457,7 @@ let tasks = loadTasks();
 
 let selectedDate = todayString();
 
-let currentMonday = getMonday(
+let currentMonday = getSunday(
   selectedDate
 );
 
@@ -1714,7 +1707,7 @@ function navigateToTaskDate(dateString) {
 
   selectedDate = dateString;
 
-  currentMonday = getMonday(
+  currentMonday = getSunday(
     dateString
   );
 

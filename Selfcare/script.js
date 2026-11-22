@@ -81,33 +81,31 @@ function parseDate(dateString) {
   return new Date(year, month - 1, day);
 }
 
-function getMonday(date) {
+function getSunday(date) {
   const result = new Date(
     date.getFullYear(),
     date.getMonth(),
     date.getDate()
   );
 
-  const day = result.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
+  result.setDate(result.getDate() - result.getDay());
 
-  result.setDate(result.getDate() + diff);
   return result;
 }
 
-let selectedWeek = getMonday(new Date());
+let selectedWeek = getSunday(new Date());
 
 function getWeekKey(date) {
-  return formatDate(getMonday(date));
+  return formatDate(getSunday(date));
 }
 
 function getTodayKey() {
   return formatDate(new Date());
 }
 
-function getWeekDates(monday) {
+function getWeekDates(sunday) {
   return Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(monday);
+    const date = new Date(sunday);
     date.setDate(date.getDate() + i);
     return formatDate(date);
   });
@@ -117,16 +115,16 @@ function changeWeek(amount) {
   const next = new Date(selectedWeek);
   next.setDate(next.getDate() + amount * 7);
 
-  selectedWeek = getMonday(next);
+  selectedWeek = getSunday(next);
   render();
 }
 
-function formatWeekLabel(monday) {
-  const sunday = new Date(monday);
-  sunday.setDate(sunday.getDate() + 6);
+function formatWeekLabel(sunday) {
+  const saturday = new Date(sunday);
+  saturday.setDate(saturday.getDate() + 6);
 
-  const start = `${monday.getMonth() + 1}/${monday.getDate()}`;
-  const end = `${sunday.getMonth() + 1}/${sunday.getDate()}`;
+  const start = `${sunday.getMonth() + 1}/${sunday.getDate()}`;
+  const end = `${saturday.getMonth() + 1}/${saturday.getDate()}`;
 
   return `${start} — ${end}`;
 }
@@ -518,7 +516,7 @@ function checkDateChange() {
     lastRenderedDate = today;
 
     if (wasViewingCurrentWeek) {
-      selectedWeek = getMonday(new Date());
+      selectedWeek = getSunday(new Date());
     }
 
     render();

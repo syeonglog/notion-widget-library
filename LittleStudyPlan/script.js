@@ -10,7 +10,7 @@ const SUBJECT_STORAGE_KEY = "littleStudyPlan_subjects_v1";
 
 const $ = id => document.getElementById(id);
 
-const DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -181,7 +181,7 @@ function startOfWeek(date) {
   const copy = new Date(
     date.getFullYear(), date.getMonth(), date.getDate(), 12
   );
-  const offset = (copy.getDay() + 6) % 7;
+  const offset = copy.getDay();
   copy.setDate(copy.getDate() - offset);
   return copy;
 }
