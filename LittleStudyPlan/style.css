@@ -689,3 +689,22 @@ select:focus-visible,
     top: 50px;
   }
 }
+
+/* Subject별 공부 계획 그룹 */
+.subject-group {
+  margin-bottom: 15px;
+}
+
+.subject-group .subject-tag {
+  margin-bottom: 8px;
+}
+
+.subject-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subject-tasks .task-item {
+  margin-bottom: 0;
+}

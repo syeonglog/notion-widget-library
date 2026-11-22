@@ -286,7 +286,6 @@ function renderTask(task, key) {
 
   return `
     <div class="task-item ${done ? "completed" : ""}">
-      <span class="subject-tag">${escapeHTML(task.subject)}</span>
       <div class="task-content">
         <input
           class="task-checkbox"
@@ -306,6 +305,39 @@ function renderTask(task, key) {
       </div>
     </div>
   `;
+}
+
+function renderGroupedTasks(taskList, key) {
+  const groups = new Map();
+
+  // 같은 과목끼리 묶기
+  taskList.forEach(task => {
+    if (!groups.has(task.subject)) {
+      groups.set(task.subject, []);
+    }
+
+    groups.get(task.subject).push(task);
+  });
+
+  // 과목별 라벨 + 공부 계획 목록
+  return Array.from(groups.entries()).map(([subject, items]) => {
+    const sortedItems = [...items].sort((a, b) => {
+      return Number(isCompleted(a, key)) -
+             Number(isCompleted(b, key));
+    });
+
+    return `
+      <div class="subject-group">
+        <span class="subject-tag">
+          ${escapeHTML(subject)}
+        </span>
+
+        <div class="subject-tasks">
+          ${sortedItems.map(task => renderTask(task, key)).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function renderCards() {
@@ -328,7 +360,7 @@ function renderCards() {
         </div>
 
         <div class="day-list" data-list-date="${key}">
-          ${dayTasks.map(task => renderTask(task, key)).join("")}
+          ${renderGroupedTasks(dayTasks, key)}
         </div>
 
         <button class="add-card-btn"
@@ -348,7 +380,7 @@ function renderSomeday() {
   const someday = getSomedayTasks();
 
   list.innerHTML = someday.length
-    ? someday.map(task => renderTask(task, null)).join("")
+    ? renderGroupedTasks(someday, null)
     : '<div class="empty-message">아직 등록된 계획이 없어요.</div>';
 
   list.scrollTop = position;
